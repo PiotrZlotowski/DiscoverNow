@@ -55,6 +55,7 @@ detekt {
 	defaultProfile {
 		input = file("src/main/kotlin")
 		filters = ".*/resources/.*,.*/build/.*"
+		config = file("detekt.yml")
 	}
 }
 
