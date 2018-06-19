@@ -7,10 +7,6 @@ buildscript {
 		liquibaseVersion = '3.6.1'
 		postgresqlDriverVersion = '42.2.2'
 	}
-	repositories {
-		mavenCentral()
-		jcenter()
-	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
