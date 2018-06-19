@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		kotlinVersion = '1.2.50'
-		springBootVersion = '2.0.2.RELEASE'
+		springBootVersion = '2.0.3.RELEASE'
 		detektVersion = '1.0.0.RC6-4'
 		swaggerVersion = '2.8.0'
 		liquibaseVersion = '3.6.1'
@@ -17,7 +17,6 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 	}
 }
-
 
 plugins {
 	id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
@@ -62,6 +61,11 @@ detekt {
 	}
 }
 
+
+test {
+	useJUnitPlatform()
+}
+
 task preBuild << {
 	detektCheck
 }
@@ -82,8 +86,12 @@ dependencies {
 
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.boot:spring-boot-starter-test') {
+		exclude module: 'junit'
+	}
 	testCompile('org.springframework.security:spring-security-test')
+	testImplementation('org.junit.jupiter:junit-jupiter-api')
+	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }
 
 build.dependsOn preBuild
