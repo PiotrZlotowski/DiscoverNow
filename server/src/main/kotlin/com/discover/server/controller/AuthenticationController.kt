@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.session.SessionAuthenticationException
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/authorization/")
@@ -30,7 +30,7 @@ class AuthenticationController constructor(private val authenticationManager: Au
     }
 
     @PostMapping("/authenticate")
-    fun authorize(@RequestBody authenticationRequestRequest: AuthenticationRequest,
+    fun authorize(@RequestBody @Valid authenticationRequestRequest: AuthenticationRequest,
                   httpServletRequest: HttpServletRequest): AuthenticationToken {
         val session = createHttpSession(authenticationRequestRequest, httpServletRequest)
                 ?: throw SessionAuthenticationException("Unable to create user session!")

@@ -6,6 +6,8 @@ buildscript {
 		swaggerVersion = '2.8.0'
 		liquibaseVersion = '3.6.1'
 		postgresqlDriverVersion = '42.2.2'
+		assertJVersion = '3.10.0'
+		mockitoKotlinVersion = '1.6.0'
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -79,13 +81,19 @@ dependencies {
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: "${swaggerVersion}"
 	compile group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
 	compile group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.0.3.RELEASE'
+
+
 
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
-	testCompile('org.springframework.boot:spring-boot-starter-test') {
+	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
 		exclude module: 'junit'
 	}
+	testCompile("org.assertj:assertj-core:${assertJVersion}")
 	testCompile('org.springframework.security:spring-security-test')
+	testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: "${mockitoKotlinVersion}"
+
 	testImplementation('org.junit.jupiter:junit-jupiter-api')
 	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }
