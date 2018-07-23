@@ -8,6 +8,7 @@ buildscript {
 		postgresqlDriverVersion = '42.2.2'
 		assertJVersion = '3.10.0'
 		mockitoKotlinVersion = '1.6.0'
+		mockitoVersion = '2.19.1'
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -82,18 +83,20 @@ dependencies {
 	compile group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
 	compile group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.0.3.RELEASE'
-
+	compile group: 'com.rometools', name: 'rome', version: '1.10.0'
 
 
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
 	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
 		exclude module: 'junit'
+		exclude module: 'mockito-core'
 	}
 	testCompile("org.assertj:assertj-core:${assertJVersion}")
 	testCompile('org.springframework.security:spring-security-test')
 	testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: "${mockitoKotlinVersion}"
-
+	testCompile group: 'org.mockito', name: 'mockito-core', version: "${mockitoVersion}"
+	testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: "${mockitoVersion}"
 	testImplementation('org.junit.jupiter:junit-jupiter-api')
 	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }
