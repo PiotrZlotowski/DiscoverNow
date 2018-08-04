@@ -6,7 +6,6 @@ buildscript {
 		swaggerVersion = '2.8.0'
 		liquibaseVersion = '3.6.1'
 		postgresqlDriverVersion = '42.2.2'
-//		jooqVersion = '3.9.5'
 		jooqVersion = '3.11.3'
 		jooqCodeGenVersion = '3.0.0'
 	}
@@ -16,7 +15,6 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath "org.postgresql:postgresql:${postgresqlDriverVersion}"
 		classpath "nu.studer:gradle-jooq-plugin:${jooqCodeGenVersion}"
-		classpath("org.jooq:jooq-codegen:3.10.7")
 
 	}
 }
@@ -90,8 +88,6 @@ dependencies {
 	compile group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
 	compile "org.jooq:jooq:$jooqVersion"
 	jooqRuntime "org.postgresql:postgresql:${postgresqlDriverVersion}"
-	//compile "org.jooq:jooq-meta:3.11.3"
-//	compile 'org.jooq:jooq-codegen:3.11.3'
 	compile('org.springframework.boot:spring-boot-starter-jooq')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('com.h2database:h2')
