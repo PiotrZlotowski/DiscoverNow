@@ -26,6 +26,7 @@ class AuthenticationController constructor(private val authenticationManager: Au
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun logout(httpSession: HttpSession) {
+        SecurityContextHolder.clearContext()
         httpSession.invalidate()
     }
 

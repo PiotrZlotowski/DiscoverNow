@@ -27,9 +27,10 @@ class SecurityConfig(private val dataSource: DataSource) : WebSecurityConfigurer
             http.authorizeRequests()
                     .antMatchers("/api/authorization/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/api/**").fullyAuthenticated()
 
             http.requestCache().requestCache(NullRequestCache())
-            http.headers().frameOptions()?.sameOrigin()
+            http.headers().frameOptions().sameOrigin()
             http.csrf().disable()
     }
 
@@ -43,6 +44,7 @@ class SecurityConfig(private val dataSource: DataSource) : WebSecurityConfigurer
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
+        val passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
         return PasswordEncoderFactories.createDelegatingPasswordEncoder()
     }
 

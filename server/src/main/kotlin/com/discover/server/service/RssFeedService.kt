@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 @Service
-class RssFeedService(val restTemplate: RestTemplate, val feedInput : SyndFeedInput) {
+class RssFeedService(private val restTemplate: RestTemplate, private val feedInput : SyndFeedInput) {
 
     fun getFeedBySite(resource: String): Set<RssFeedItem> {
         if (resource.isEmpty()) {
@@ -34,7 +34,3 @@ class RssFeedService(val restTemplate: RestTemplate, val feedInput : SyndFeedInp
 }
 
 data class RssFeedItem(val title: String, val description: String, val link: String, val timePublished: LocalDateTime, val origin: String)
-
-
-// TODO: Zaimplementować pobieranie jednego source itemu + wielu za pomocą coroutines
-// TODO: Exstrakcja RssFeedItem do Interfejsu? Tak, że różne source itemy takie jak Twitter / RSS / może reddit będą sprowadzane do tej samej abstrakcji?

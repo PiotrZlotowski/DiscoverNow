@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="table_1" author="pz">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(80)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="table_2" author="pz">
+        <createTable tableName="user_roles">
+            <column autoIncrement="true" name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_users_roles"
+                             references="users(id)"
+                />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="table_3" author="pz">
+        <createTable tableName="sources">
+            <column autoIncrement="true" name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="refresh_interval" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_refresh" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="table_4" author="pz">
+        <createTable tableName="feeds">
+            <column autoIncrement="true" name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="summary" type="varchar(1500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seen" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_sources"
+                             references="sources(id)"
+                />
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_feeds_users"
+                             references="users(id)"
+                />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="table_5" author="pz">
+        <createTable tableName="user_sources">
+            <column name="source_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_sources_source"
+                             references="sources(id)"
+                />
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_sources_user"
+                             references="users(id)"
+                />
+            </column>
+            <column name="time_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

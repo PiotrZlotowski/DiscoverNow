@@ -19,8 +19,6 @@ class BaseExceptionHandler : ResponseEntityExceptionHandler() {
         return ResponseEntity(errorResponse, headers, status);
     }
 
-
-
 }
 
 data class ErrorResponse(val message: String, val fieldsErrors: List<FieldErrors>)
