@@ -9,10 +9,13 @@ import javax.persistence.Table
 @Entity
 @Table(name = "feeds")
 class Feed(val title: String,
-                val summary: String,
-                val url: String,
-                val seen: Boolean = false,
-                val timeCreated: LocalDateTime = LocalDateTime.now(),
-                @field:ManyToOne
-                @field:JoinColumn(name = "source_id")
-                val source: Source): AbstractJpaPersistable<Long>()
+           val summary: String,
+           val url: String,
+           val seen: Boolean = false,
+           val timeCreated: LocalDateTime = LocalDateTime.now(),
+           @field:ManyToOne
+           @field:JoinColumn(name = "source_id")
+           val source: Source,
+           @field:ManyToOne
+           @field:JoinColumn(name = "user_id")
+           val user: User) : AbstractJpaPersistable<Long>()

@@ -9,7 +9,7 @@ import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
-abstract class AbstractJpaPersistable<T : Serializable> {
+abstract class AbstractJpaPersistable<T : Serializable>: Serializable {
 
     companion object {
         private val serialVersionUID = -5554308939380869754L

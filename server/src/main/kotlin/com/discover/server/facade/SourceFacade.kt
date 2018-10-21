@@ -3,6 +3,7 @@ package com.discover.server.facade
 import com.discover.server.dto.SearchCriteriaDTO
 import com.discover.server.dto.SourceDTO
 import com.discover.server.model.Source
+import com.discover.server.model.User
 import com.discover.server.service.SearchService
 import com.discover.server.service.SourceService
 import ma.glasnost.orika.MapperFacade
@@ -13,9 +14,9 @@ class SourceFacade(private val mapper: MapperFacade,
                    private val sourceService: SourceService,
                    private val searchService: SearchService<Source>) {
 
-    fun addSource(sourceDTO: SourceDTO): SourceDTO {
+    fun addSource(sourceDTO: SourceDTO, user: User): SourceDTO {
         val source = mapper.map(sourceDTO, Source::class.java)
-        val addedSource = sourceService.addSource(source)
+        val addedSource = sourceService.addSource(source, user)
         return mapper.map(addedSource, SourceDTO::class.java)
     }
 

@@ -4,7 +4,9 @@ import com.discover.server.dto.SearchCriteriaDTO
 import com.discover.server.dto.SourceDTO
 import com.discover.server.facade.SourceFacade
 import com.discover.server.model.Source
+import com.discover.server.model.User
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,7 +23,7 @@ import javax.validation.Valid
 class SourceController(private val sourceFacade: SourceFacade) {
 
     @PostMapping
-    fun addSource(@Valid @RequestBody source: SourceDTO) = sourceFacade.addSource(source)
+    fun addSource(@Valid @RequestBody source: SourceDTO, @AuthenticationPrincipal user: User) = sourceFacade.addSource(source, user)
 
     @GetMapping
     fun getSources(): Iterable<Source> = sourceFacade.getSources()

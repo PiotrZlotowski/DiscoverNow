@@ -1,6 +1,7 @@
 package com.discover.server.service
 
 import com.discover.server.model.Source
+import com.discover.server.model.User
 import com.discover.server.repository.SourceRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
@@ -28,7 +29,23 @@ class SourceService(val sourceRepository: SourceRepository) {
 
     // TODO: Maybe we should use ActiveMQ in order to inform everyone that the a new source was added.
     // TODO: Someone can process the source faster then the normal schedule
-    fun addSource(source: Source) = sourceRepository.save(source)
+    fun addSource(source: Source, user: User): Source {
+        addSourcePredefinedData(source)
+        val foundSource = sourceRepository.findSourceByUrl(source.url)
+        foundSource?.let {
+            // TODO: Laziness issue?
+            it.users += user
+            return it
+        }
+        source.users += user
+        return sourceRepository.save(source)
+    }
+
+    private fun addSourcePredefinedData(source: Source) {
+        source.timeCreated = LocalDateTime.now()
+        source.refreshInterval = 30
+        source.name = source.url
+    }
 
     fun getSources() = sourceRepository.findAll()
 

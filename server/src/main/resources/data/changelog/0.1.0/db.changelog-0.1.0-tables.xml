@@ -56,7 +56,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_refresh" type="datetime">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -69,10 +69,10 @@
             <column name="title" type="varchar(250)">
                 <constraints nullable="false"/>
             </column>
-            <column name="summary" type="varchar(1500)">
+            <column name="summary" type="varchar(2500)">
                 <constraints nullable="false"/>
             </column>
-            <column name="url" type="varchar(150)">
+            <column name="url" type="varchar(500)">
                 <constraints nullable="false"/>
             </column>
             <column name="seen" type="boolean">
@@ -110,9 +110,9 @@
                              references="users(id)"
                 />
             </column>
-            <column name="time_created" type="datetime">
-                <constraints nullable="false"/>
-            </column>
+            <!--<column name="time_created" type="datetime">-->
+                <!--<constraints nullable="false"/>-->
+            <!--</column>-->
         </createTable>
     </changeSet>
 
