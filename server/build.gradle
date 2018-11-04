@@ -7,11 +7,12 @@ buildscript {
         liquibaseVersion = '3.6.2'
         postgresqlDriverVersion = '42.2.2'
         assertJVersion = '3.10.0'
-        mockitoKotlinVersion = '1.6.0'
-        mockitoVersion = '2.23.0'
         romeTools = '1.10.0'
         orikaCore = '1.5.2'
         jacksonKotlin = '2.9.+'
+        mockitoKotlinVersion = '1.6.0'
+        mockitoVersion = '2.23.0'
+        mockkVersion = '1.8.11.kotlin13'
 
     }
     dependencies {
@@ -98,13 +99,12 @@ dependencies {
     runtime('com.h2database:h2')
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
         exclude module: 'junit'
-        exclude module: 'mockito-core'
     }
     testCompile("org.assertj:assertj-core:${assertJVersion}")
     testCompile('org.springframework.security:spring-security-test')
     testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: "${mockitoKotlinVersion}"
-    testCompile group: 'org.mockito', name: 'mockito-core', version: "${mockitoVersion}"
     testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: "${mockitoVersion}"
+    testCompile group: 'io.mockk', name: 'mockk', version: "${mockkVersion}"
     testImplementation('org.junit.jupiter:junit-jupiter-api')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }
