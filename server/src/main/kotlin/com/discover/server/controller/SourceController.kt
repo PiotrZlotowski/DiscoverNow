@@ -1,7 +1,7 @@
 package com.discover.server.controller
 
-import com.discover.server.dto.SearchCriteriaDTO
-import com.discover.server.dto.SourceDTO
+import com.discover.server.dto.SearchCriteria
+import com.discover.server.dto.SourceRequest
 import com.discover.server.facade.SourceFacade
 import com.discover.server.model.Source
 import com.discover.server.model.User
@@ -23,7 +23,7 @@ import javax.validation.Valid
 class SourceController(private val sourceFacade: SourceFacade) {
 
     @PostMapping
-    fun addSource(@Valid @RequestBody source: SourceDTO, @AuthenticationPrincipal user: User) = sourceFacade.addSource(source, user)
+    fun addSource(@Valid @RequestBody source: SourceRequest, @AuthenticationPrincipal user: User) = sourceFacade.addSource(source, user)
 
     @GetMapping
     fun getSources(): Iterable<Source> = sourceFacade.getSources()
@@ -32,7 +32,7 @@ class SourceController(private val sourceFacade: SourceFacade) {
     fun getSource(@PathVariable("id") id: String) = sourceFacade.getSource(id)
 
     @PutMapping("/{id}")
-    fun updateSource(@PathVariable("id") id: String, @Valid @RequestBody source: SourceDTO) {
+    fun updateSource(@PathVariable("id") id: String, @Valid @RequestBody source: SourceRequest) {
             sourceFacade.updateSource(id, source)
     }
 
@@ -48,7 +48,7 @@ class SourceController(private val sourceFacade: SourceFacade) {
 class SourceSearchController(private val sourceFacade: SourceFacade) {
 
     @PostMapping
-    fun searchSources(@RequestBody searchCriteriaDTO: SearchCriteriaDTO): List<SourceDTO> {
-        return sourceFacade.findAll(searchCriteriaDTO)
+    fun searchSources(@RequestBody searchCriteria: SearchCriteria): List<SourceRequest> {
+        return sourceFacade.findAll(searchCriteria)
     }
 }

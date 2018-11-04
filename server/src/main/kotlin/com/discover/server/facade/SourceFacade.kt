@@ -1,7 +1,7 @@
 package com.discover.server.facade
 
-import com.discover.server.dto.SearchCriteriaDTO
-import com.discover.server.dto.SourceDTO
+import com.discover.server.dto.SearchCriteria
+import com.discover.server.dto.SourceRequest
 import com.discover.server.model.Source
 import com.discover.server.model.User
 import com.discover.server.service.SearchService
@@ -14,18 +14,18 @@ class SourceFacade(private val mapper: MapperFacade,
                    private val sourceService: SourceService,
                    private val searchService: SearchService<Source>) {
 
-    fun addSource(sourceDTO: SourceDTO, user: User): SourceDTO {
-        val source = mapper.map(sourceDTO, Source::class.java)
+    fun addSource(sourceRequest: SourceRequest, user: User): SourceRequest {
+        val source = mapper.map(sourceRequest, Source::class.java)
         val addedSource = sourceService.addSource(source, user)
-        return mapper.map(addedSource, SourceDTO::class.java)
+        return mapper.map(addedSource, SourceRequest::class.java)
     }
 
     fun getSources() = sourceService.getSources()
 
     fun getSource(id: String) = sourceService.getSource(id)
 
-    fun updateSource(id: String, sourceDTO: SourceDTO) {
-        val source = mapper.map(sourceDTO, Source::class.java)
+    fun updateSource(id: String, sourceRequest: SourceRequest) {
+        val source = mapper.map(sourceRequest, Source::class.java)
         sourceService.updateSource(id, source)
     }
 
@@ -33,9 +33,9 @@ class SourceFacade(private val mapper: MapperFacade,
         sourceService.deleteSourceById(id)
     }
 
-    fun findAll(searchCriteriaDTO: SearchCriteriaDTO): List<SourceDTO> {
-        val specifications = searchCriteriaDTO.searchCriteria.map { searchService.getSearchPredicate(it) }.toSet()
+    fun findAll(searchCriteria: SearchCriteria): List<SourceRequest> {
+        val specifications = searchCriteria.criteria.map { searchService.getSearchPredicate(it) }.toSet()
         val matchingSources = sourceService.findAll(specifications)
-        return mapper.mapAsList(matchingSources, SourceDTO::class.java)
+        return mapper.mapAsList(matchingSources, SourceRequest::class.java)
     }
 }
