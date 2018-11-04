@@ -1,21 +1,19 @@
 package com.discover.server.service
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import com.rometools.rome.feed.synd.SyndContentImpl
 import com.rometools.rome.feed.synd.SyndEntryImpl
 import com.rometools.rome.feed.synd.SyndFeed
 import com.rometools.rome.io.SyndFeedInput
 import com.rometools.rome.io.XmlReader
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
@@ -26,27 +24,26 @@ import java.time.ZoneOffset
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ExtendWith(MockitoExtension::class)
-class RssFeedServiceTest {
+@ExtendWith(MockKExtension::class)
+class RssFeedServiceTests {
 
-    @InjectMocks
+    @InjectMockKs
     private lateinit var rssFeedService: RssFeedService
 
-    @Mock
+    @MockK
     private lateinit var restTemplate: RestTemplate
 
-    @Mock
+    @MockK
     private lateinit var feedInput: SyndFeedInput
 
 
     @Test
     fun `getSourceItem should return empty collection when provided resource is empty`() {
-        // given
+        // GIVEN
         val resource = ""
-
-        // when
+        // WHEN
         val actual = rssFeedService.getFeedBySite(resource)
-        // then
+        // THEN
         assertThat(actual)
                 .isNotNull
                 .isEmpty()
@@ -56,7 +53,12 @@ class RssFeedServiceTest {
 
     @Test
     fun `getSourceItem should return one item when provided resource is correct`() {
-        // given
+        // GIVEN
+        val syndFeed: SyndFeed = mockk()
+        val responseInputStream: InputStream = mockk(relaxed = true)
+        val responseResource: Resource = mockk()
+        val responseEntity: ResponseEntity<Resource> = mockk()
+        // AND
         val resource = "http://rss.com/rss"
         val syndEntry = SyndEntryImpl()
 
@@ -65,30 +67,21 @@ class RssFeedServiceTest {
                 link = "http://rss.com/article/1",
                 timePublished = LocalDateTime.of(2018, Month.JANUARY, 1, 1, 0, 0),
                 origin = resource)
-
         val syndContent = SyndContentImpl()
         syndContent.value = "Description1"
         syndEntry.link = "http://rss.com/article/1"
         syndEntry.title = "Article 1"
         syndEntry.description = syndContent
         syndEntry.publishedDate = Date.from(LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0, 0).toInstant(ZoneOffset.UTC))
-
-        val syndFeed: SyndFeed = mock {
-            on { entries } doReturn listOf(syndEntry)
-        }
-        val responseInputStream: InputStream = mock()
-        val responseResource: Resource = mock {
-            on { inputStream } doReturn responseInputStream
-        }
-        val responseEntity: ResponseEntity<Resource> = mock {
-            on{ body } doReturn responseResource
-        }
-        whenever(restTemplate.getForEntity(resource, Resource::class.java)) doReturn responseEntity
-        whenever(feedInput.build(any<XmlReader>())) doReturn syndFeed
-
-        // when
+        // AND
+        every { syndFeed.entries } returns listOf(syndEntry)
+        every { responseResource.inputStream } returns responseInputStream
+        every { responseEntity.body } returns responseResource
+        every { restTemplate.getForEntity(resource, Resource::class.java) } returns responseEntity
+        every { feedInput.build(any<XmlReader>()) } returns syndFeed
+        // WHEN
         val actual = rssFeedService.getFeedBySite(resource)
-        // then
+        // THEN
         assertThat(actual)
                 .isNotNull
                 .hasSize(1)
