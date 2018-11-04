@@ -1,25 +1,29 @@
 buildscript {
-	ext {
-		kotlinVersion = '1.2.51'
-		springBootVersion = '2.0.3.RELEASE'
-		detektVersion = '1.0.0.RC6-4'
-		swaggerVersion = '2.8.0'
-		liquibaseVersion = '3.6.1'
-		postgresqlDriverVersion = '42.2.2'
-		assertJVersion = '3.10.0'
-		mockitoKotlinVersion = '1.6.0'
-		mockitoVersion = '2.19.1'
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
-		classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
-	}
+    ext {
+        kotlinVersion = '1.2.51'
+        springBootVersion = '2.1.0.RELEASE'
+        detektVersion = '1.0.0.RC6-4'
+        swaggerVersion = '2.8.0'
+        liquibaseVersion = '3.6.2'
+        postgresqlDriverVersion = '42.2.2'
+        assertJVersion = '3.10.0'
+        mockitoKotlinVersion = '1.6.0'
+        mockitoVersion = '2.23.0'
+        romeTools = '1.10.0'
+        orikaCore = '1.5.2'
+        jacksonKotlin = '2.9.+'
+
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
+    }
 }
 
 plugins {
-	id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
 }
 
 apply plugin: 'kotlin'
@@ -33,76 +37,76 @@ group = 'com.discover'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 compileKotlin {
-	kotlinOptions {
-		freeCompilerArgs = ["-Xjsr305=strict"]
-		jvmTarget = "1.8"
-	}
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
 }
 compileTestKotlin {
-	kotlinOptions {
-		freeCompilerArgs = ["-Xjsr305=strict"]
-		jvmTarget = "1.8"
-	}
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
 }
 
 repositories {
-	mavenCentral()
-	jcenter()
+    mavenCentral()
+    jcenter()
 }
 
 
 
 
 detekt {
-	version = "${detektVersion}"
-	defaultProfile {
-		input = file("src/main/kotlin")
-		filters = ".*/resources/.*,.*/build/.*"
-		config = file("detekt.yml")
-	}
+    version = "${detektVersion}"
+    defaultProfile {
+        input = file("src/main/kotlin")
+        filters = ".*/resources/.*,.*/build/.*"
+        config = file("detekt.yml")
+    }
 }
 
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 task preBuild << {
-	detektCheck
+    detektCheck
 }
 
 dependencies {
-	compile('org.springframework.session:spring-session-jdbc')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-validation')
-	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
-	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	compile("org.jetbrains.kotlin:kotlin-reflect")
-	compile group: 'io.springfox', name: 'springfox-swagger2', version: "${swaggerVersion}"
-	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: "${swaggerVersion}"
-	compile group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
-	compile group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
-	compile group: 'com.rometools', name: 'rome', version: '1.10.0'
-	compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.5.2'
-    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
-    
+    compile('org.springframework.session:spring-session-jdbc')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-validation')
+    compile('com.fasterxml.jackson.module:jackson-module-kotlin')
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    compile("org.jetbrains.kotlin:kotlin-reflect")
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: "${swaggerVersion}"
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: "${swaggerVersion}"
+    compile group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
+    compile group: 'org.postgresql', name: 'postgresql', version: "${postgresqlDriverVersion}"
+    compile group: 'com.rometools', name: 'rome', version: "${romeTools}"
+    compile group: 'ma.glasnost.orika', name: 'orika-core', version: "${orikaCore}"
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "${jacksonKotlin}"
+
 
     runtime('org.springframework.boot:spring-boot-devtools')
-	runtime('com.h2database:h2')
-	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
-		exclude module: 'junit'
-		exclude module: 'mockito-core'
-	}
-	testCompile("org.assertj:assertj-core:${assertJVersion}")
-	testCompile('org.springframework.security:spring-security-test')
-	testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: "${mockitoKotlinVersion}"
-	testCompile group: 'org.mockito', name: 'mockito-core', version: "${mockitoVersion}"
-	testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: "${mockitoVersion}"
-	testImplementation('org.junit.jupiter:junit-jupiter-api')
-	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+    runtime('com.h2database:h2')
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
+        exclude module: 'junit'
+        exclude module: 'mockito-core'
+    }
+    testCompile("org.assertj:assertj-core:${assertJVersion}")
+    testCompile('org.springframework.security:spring-security-test')
+    testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: "${mockitoKotlinVersion}"
+    testCompile group: 'org.mockito', name: 'mockito-core', version: "${mockitoVersion}"
+    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: "${mockitoVersion}"
+    testImplementation('org.junit.jupiter:junit-jupiter-api')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }
 
 build.dependsOn preBuild
