@@ -1,7 +1,6 @@
 package com.discover.server.configuration
 
 import com.discover.server.service.UserService
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -17,12 +16,6 @@ import javax.sql.DataSource
 @EnableWebSecurity
 class SecurityConfig(private val dataSource: DataSource, private val userService: UserService) : WebSecurityConfigurerAdapter(false) {
 
-
-    @Value("\${spring.security.queries.users}")
-    private lateinit var usersQuery : String
-
-    @Value("\${spring.security.queries.roles}")
-    private lateinit var rolesQuery : String
 
     override fun configure(http: HttpSecurity) {
             http.authorizeRequests()
@@ -44,7 +37,6 @@ class SecurityConfig(private val dataSource: DataSource, private val userService
         return PasswordEncoderFactories.createDelegatingPasswordEncoder()
     }
 
-    @Bean
     override fun userDetailsServiceBean(): UserDetailsService {
         return userService
     }
