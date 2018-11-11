@@ -19,7 +19,7 @@ class FeedFacade(private val rssFeedService: RssFeedService,
         val sourceUrls = sourceService.getOriginFromSources(readyToProcessSources)
         val feedBySites = rssFeedService.getFeedBySites(sourceUrls)
         feedService.addNewFeeds(feedBySites, readyToProcessSources)
-        sourceService.updateLastRefreshToNow(readyToProcessSources)
+        sourceService.updateLastRefresh(readyToProcessSources)
     }
 
 

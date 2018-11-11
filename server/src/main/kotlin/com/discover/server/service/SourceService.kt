@@ -20,9 +20,9 @@ class SourceService(val sourceRepository: SourceRepository) {
 
     fun getOriginFromSources(sources: List<Source>): Set<String> = sources.map { it.url }.toSet()
 
-    fun updateLastRefreshToNow(sources: List<Source>) {
+    fun updateLastRefresh(sources: List<Source>, newRefreshTime: LocalDateTime = LocalDateTime.now()) {
         sources.forEach {
-            it.lastRefresh = LocalDateTime.now()
+            it.lastRefresh = newRefreshTime
             sourceRepository.save(it)
         }
     }
@@ -30,13 +30,16 @@ class SourceService(val sourceRepository: SourceRepository) {
     // TODO: Maybe we should use ActiveMQ in order to inform everyone that the a new source was added.
     // TODO: Someone can process the source faster then the normal schedule
     fun addSource(source: Source, user: User): Source {
-        addSourcePredefinedData(source)
+        /*
+         * Whenever the source is not new, just add the user to the subscribers of the source
+         */
         val foundSource = sourceRepository.findSourceByUrl(source.url)
         foundSource?.let {
             // TODO: Laziness issue?
             it.users += user
             return it
         }
+        addSourcePredefinedData(source)
         source.users += user
         return sourceRepository.save(source)
     }
