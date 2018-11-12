@@ -60,7 +60,6 @@ class SourceService(val sourceRepository: SourceRepository) {
         sourceToBeUpdated.name = source.name
         sourceToBeUpdated.url = source.url
         sourceToBeUpdated.refreshInterval = source.refreshInterval
-
     }
 
     fun deleteSourceById(id: String) = sourceRepository.deleteById(id.toLong())
