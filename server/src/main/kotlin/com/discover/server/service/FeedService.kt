@@ -12,21 +12,21 @@ const val MAX_LENGTH_DESCRIPTION = 2499
 class FeedService(private val feedRepository: FeedRepository) {
 
     fun addNewFeeds(feedBySites: Map<String, List<RssFeedItem>>, sources: List<Source>) {
+        val feedsToSave = getFeedsToSave(sources, feedBySites)
+        if (!feedsToSave.isNullOrEmpty()) {
+            feedRepository.saveAll(feedsToSave)
+        }
+    }
 
+    fun getFeedsToSave(sources: List<Source>, feedBySites: Map<String, List<RssFeedItem>>): List<Feed> {
         val notSeenFeedsByUser = feedRepository.findBySeen(seen = false).groupBy { it.user }
-
         val feedsToSave = sources.flatMap { source ->
             source.users.flatMap { user ->
-
-
                 val userFeeds = notSeenFeedsByUser[user]
-
                 feedBySites.filter { it.key == source.url }
                         .flatMap { it.value.toList() }
                         .asSequence()
-                        .filter {
-                            userFeeds?.any { feed -> feed.url == it.link }?.not() ?: true
-                        }
+                        .filter(isNewFeed(userFeeds))
                         .map {
                             Feed(url = it.link, title = it.title,
                                     user = user, summary = it.description.substring(0, Math.min(MAX_LENGTH_DESCRIPTION, it.description.length)), timeCreated = it.timePublished, seen = false,
@@ -35,7 +35,13 @@ class FeedService(private val feedRepository: FeedRepository) {
                         .toList()
             }
         }
-        feedRepository.saveAll(feedsToSave)
+        return feedsToSave
+    }
+
+    private fun isNewFeed(userFeeds: List<Feed>?): (RssFeedItem) -> Boolean {
+        return {
+            userFeeds?.any { feed -> feed.url == it.link }?.not() ?: true
+        }
     }
 
     fun getCurrentUserFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimeCreated(user)
