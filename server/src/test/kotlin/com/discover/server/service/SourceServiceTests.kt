@@ -1,7 +1,7 @@
 package com.discover.server.service
 
-import com.discover.server.model.Source
-import com.discover.server.model.User
+import com.discover.server.domain.Source
+import com.discover.server.domain.User
 import com.discover.server.repository.SourceRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

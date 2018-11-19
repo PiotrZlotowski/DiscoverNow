@@ -1,7 +1,7 @@
 package com.discover.server.controller
 
-import com.discover.server.dto.AuthenticationRequest
-import com.discover.server.dto.AuthenticationToken
+import com.discover.server.domain.AuthenticationRequest
+import com.discover.server.domain.AuthenticationToken
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

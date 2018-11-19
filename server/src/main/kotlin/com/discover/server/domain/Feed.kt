@@ -1,4 +1,4 @@
-package com.discover.server.model
+package com.discover.server.domain
 
 import java.time.LocalDateTime
 import javax.persistence.Entity
@@ -19,3 +19,9 @@ class Feed(val title: String,
            @field:ManyToOne
            @field:JoinColumn(name = "user_id")
            val user: User) : AbstractJpaPersistable<Long>()
+
+
+data class FeedDTO(val title: String,
+                   val summary: String,
+                   val url: String,
+                   val timeCreated: String)

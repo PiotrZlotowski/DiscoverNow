@@ -1,7 +1,8 @@
 package com.discover.server.configuration
 
-import com.discover.server.dto.SourceRequest
-import com.discover.server.model.Source
+
+import com.discover.server.domain.Source
+import com.discover.server.domain.SourceDTO
 import ma.glasnost.orika.MapperFacade
 import org.springframework.context.annotation.Configuration
 import ma.glasnost.orika.impl.DefaultMapperFactory
@@ -14,7 +15,7 @@ class MapperConfiguration {
     @Bean
     fun mapperFactory(): MapperFacade {
         val mapperFactory = DefaultMapperFactory.Builder().build()
-        mapperFactory.classMap(SourceRequest::class.java, Source::class.java).byDefault()
+        mapperFactory.classMap(SourceDTO::class.java, Source::class.java).byDefault()
         return mapperFactory.mapperFacade
     }
 

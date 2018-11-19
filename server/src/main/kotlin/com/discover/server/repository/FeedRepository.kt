@@ -1,7 +1,7 @@
 package com.discover.server.repository
 
-import com.discover.server.model.Feed
-import com.discover.server.model.User
+import com.discover.server.domain.Feed
+import com.discover.server.domain.User
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository

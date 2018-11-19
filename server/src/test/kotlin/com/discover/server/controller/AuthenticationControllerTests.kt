@@ -1,8 +1,8 @@
 package com.discover.server.controller
 
-import com.discover.server.dto.AuthenticationRequest
-import com.discover.server.dto.AuthenticationToken
-import com.discover.server.model.User
+import com.discover.server.domain.AuthenticationRequest
+import com.discover.server.domain.AuthenticationToken
+import com.discover.server.domain.User
 import com.discover.server.service.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockito_kotlin.any

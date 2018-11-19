@@ -1,4 +1,4 @@
-package com.discover.server.model
+package com.discover.server.domain
 
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
@@ -8,6 +8,7 @@ import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.Table
+import javax.validation.constraints.NotEmpty
 
 @Entity
 @Table(name = "sources")
@@ -23,3 +24,5 @@ class Source(var name: String = "",
                      joinColumns = [JoinColumn(name =  "source_id", referencedColumnName = "id")],
                      inverseJoinColumns = [JoinColumn(name =  "user_id", referencedColumnName = "id")])
              var users: List<User> = emptyList()) : AbstractJpaPersistable<Long>()
+
+data class SourceDTO(@field:NotEmpty val url: String)

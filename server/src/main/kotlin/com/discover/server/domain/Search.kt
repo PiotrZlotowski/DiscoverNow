@@ -1,4 +1,4 @@
-package com.discover.server.dto
+package com.discover.server.domain
 
 
 data class SearchCriteria(val criteria: Set<Criteria>)

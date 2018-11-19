@@ -1,4 +1,4 @@
-package com.discover.server.model
+package com.discover.server.domain
 
 import org.springframework.data.util.ProxyUtils
 import java.io.Serializable

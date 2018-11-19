@@ -1,4 +1,4 @@
-package com.discover.server.model
+package com.discover.server.domain
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -9,6 +9,7 @@ import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.Table
+import javax.validation.constraints.NotEmpty
 
 
 @Entity
@@ -35,3 +36,5 @@ class User(private var email: String,
     override fun isAccountNonLocked() = true
 
 }
+
+

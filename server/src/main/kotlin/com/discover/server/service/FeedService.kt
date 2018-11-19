@@ -1,8 +1,8 @@
 package com.discover.server.service
 
-import com.discover.server.model.Feed
-import com.discover.server.model.Source
-import com.discover.server.model.User
+import com.discover.server.domain.Feed
+import com.discover.server.domain.Source
+import com.discover.server.domain.User
 import com.discover.server.repository.FeedRepository
 import org.springframework.stereotype.Service
 

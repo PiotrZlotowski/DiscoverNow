@@ -1,7 +1,7 @@
 package com.discover.server.service
 
-import com.discover.server.dto.Operator.EQUAL
-import com.discover.server.dto.Criteria
+import com.discover.server.domain.Operator.EQUAL
+import com.discover.server.domain.Criteria
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import javax.persistence.criteria.CriteriaBuilder

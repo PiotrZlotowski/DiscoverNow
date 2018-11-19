@@ -1,7 +1,5 @@
-package com.discover.server.model
+package com.discover.server.domain
 
-import java.io.Serializable
-import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne

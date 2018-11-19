@@ -1,7 +1,7 @@
 package com.discover.server.controller
 
 import com.discover.server.facade.FeedFacade
-import com.discover.server.model.User
+import com.discover.server.domain.User
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping

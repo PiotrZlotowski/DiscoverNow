@@ -1,7 +1,7 @@
 package com.discover.server.facade
 
-import com.discover.server.dto.Feed
-import com.discover.server.model.User
+import com.discover.server.domain.FeedDTO
+import com.discover.server.domain.User
 import com.discover.server.service.FeedService
 import com.discover.server.service.RssFeedService
 import com.discover.server.service.SourceService
@@ -23,14 +23,14 @@ class FeedFacade(private val rssFeedService: RssFeedService,
     }
 
 
-    fun getCurrentUserFeeds(user: User): List<Feed> {
+    fun getCurrentUserFeeds(user: User): List<FeedDTO> {
         val currentUserFeeds = feedService.getCurrentUserFeeds(user)
-        return mapper.mapAsList(currentUserFeeds, Feed::class.java)
+        return mapper.mapAsList(currentUserFeeds, FeedDTO::class.java)
     }
 
-    fun getCurrentUserSeenFeeds(user: User): List<Feed> {
+    fun getCurrentUserSeenFeeds(user: User): List<FeedDTO> {
         val currentUserSeenFeeds = feedService.getCurrentUserSeenFeeds(user)
-        return mapper.mapAsList(currentUserSeenFeeds, Feed::class.java)
+        return mapper.mapAsList(currentUserSeenFeeds, FeedDTO::class.java)
     }
 
     fun markFeedsAsSeen(feedIds: Set<String>, user: User) = feedService.markFeedsAsSeen(feedIds, user)
