@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate
 import java.io.InputStream
 import java.time.LocalDateTime
 import java.time.Month
-import java.time.ZoneOffset
+import java.time.ZoneId
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -47,7 +47,6 @@ class RssFeedServiceTests {
         assertThat(actual)
                 .isNotNull
                 .isEmpty()
-
     }
 
 
@@ -65,14 +64,15 @@ class RssFeedServiceTests {
         val rssSourceItem = RssFeedItem(title = "Article 1",
                 description = "Description1",
                 link = "http://rss.com/article/1",
-                timePublished = LocalDateTime.of(2018, Month.JANUARY, 1, 1, 0, 0),
+                timePublished = LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0, 0),
                 origin = resource)
         val syndContent = SyndContentImpl()
         syndContent.value = "Description1"
         syndEntry.link = "http://rss.com/article/1"
         syndEntry.title = "Article 1"
         syndEntry.description = syndContent
-        syndEntry.publishedDate = Date.from(LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0, 0).toInstant(ZoneOffset.UTC))
+        val zdt =  LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0, 0).atZone(ZoneId.systemDefault())
+        syndEntry.publishedDate = Date.from(zdt.toInstant())
         // AND
         every { syndFeed.entries } returns listOf(syndEntry)
         every { responseResource.inputStream } returns responseInputStream
