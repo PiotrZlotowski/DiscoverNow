@@ -11,10 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.savedrequest.NullRequestCache
-import javax.sql.DataSource
 
 @EnableWebSecurity
-class SecurityConfig(private val dataSource: DataSource, private val userService: UserService) : WebSecurityConfigurerAdapter(false) {
+class SecurityConfig(private val userService: UserService) : WebSecurityConfigurerAdapter(false) {
 
 
     override fun configure(http: HttpSecurity) {

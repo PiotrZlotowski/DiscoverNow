@@ -50,7 +50,7 @@ class SourceService(val sourceRepository: SourceRepository) {
         source.name = source.url
     }
 
-    fun getSources() = sourceRepository.findAll()
+    fun getSources(): MutableList<Source> = sourceRepository.findAll()
 
     fun getSource(id: String) = sourceRepository.findById(id.toLong())
 
