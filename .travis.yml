@@ -6,3 +6,8 @@ before_install:
   - chmod +x ./gradle/wrapper/gradle-wrapper.jar
 script:
   - ./gradlew clean test --stacktrace
+  - /gradlew sonarqube \
+    -Dsonar.projectKey=PiotrZlotowski_DiscoverNow \
+    -Dsonar.organization=piotrzlotowski-github \
+    -Dsonar.host.url=https://sonarcloud.io \
+    -Dsonar.login=$SONAR_TOKEN
