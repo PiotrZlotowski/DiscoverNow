@@ -18,11 +18,8 @@ abstract class AbstractJpaPersistable<T : Serializable>: Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INTEGER(10)")
-    private var id: T? = null
+    var id: T? = null
 
-    fun getId(): T? {
-        return id
-    }
 
     override fun equals(other: Any?): Boolean {
         other ?: return false
@@ -33,7 +30,7 @@ abstract class AbstractJpaPersistable<T : Serializable>: Serializable {
 
         other as AbstractJpaPersistable<*>
 
-        return if (null == this.getId()) false else this.getId() == other.getId()
+        return if (id == null) false else id == other.id
     }
 
     override fun hashCode(): Int {

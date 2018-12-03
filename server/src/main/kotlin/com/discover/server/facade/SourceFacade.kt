@@ -1,5 +1,6 @@
 package com.discover.server.facade
 
+import com.discover.server.domain.Response
 import com.discover.server.domain.SearchCriteria
 import com.discover.server.domain.Source
 import com.discover.server.domain.SourceDTO
@@ -14,15 +15,21 @@ class SourceFacade(private val mapper: MapperFacade,
                    private val sourceService: SourceService,
                    private val searchService: SearchService<Source>) {
 
-    fun addSource(sourceRequest: SourceDTO, user: User): SourceDTO {
+    fun addSource(sourceRequest: SourceDTO, user: User): Response {
         val source = mapper.map(sourceRequest, Source::class.java)
         val addedSource = sourceService.addSource(source, user)
-        return mapper.map(addedSource, SourceDTO::class.java)
+        return mapper.map(addedSource, Response::class.java)
     }
 
-    fun getSources() = sourceService.getSources()
+    fun getSources(): List<Response> {
+        val sources = sourceService.getSources()
+        return mapper.mapAsList(sources, Response::class.java)
+    }
 
-    fun getSource(id: String) = sourceService.getSource(id)
+    fun getSource(id: String): Response {
+        val source = sourceService.getSource(id)
+        return mapper.map(source, Response::class.java)
+    }
 
     fun updateSource(id: String, sourceRequest: SourceDTO) {
         val source = mapper.map(sourceRequest, Source::class.java)
@@ -33,9 +40,9 @@ class SourceFacade(private val mapper: MapperFacade,
         sourceService.deleteSourceById(id)
     }
 
-    fun findAll(searchCriteria: SearchCriteria): List<SourceDTO> {
+    fun findAll(searchCriteria: SearchCriteria): List<Response> {
         val specifications = searchCriteria.criteria.map { searchService.getSearchPredicate(it) }.toSet()
         val matchingSources = sourceService.findAll(specifications)
-        return mapper.mapAsList(matchingSources, SourceDTO::class.java)
+        return mapper.mapAsList(matchingSources, Response::class.java)
     }
 }
