@@ -5,6 +5,8 @@ import com.rometools.rome.io.XmlReader
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import java.io.InputStream
+import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -15,8 +17,7 @@ class RssFeedService(private val restTemplate: RestTemplate, private val feedInp
         if (resource.isEmpty()) {
             return emptySet()
         }
-        val responseEntity = restTemplate.getForEntity(resource, Resource::class.java)
-        val responseInputStream = responseEntity.body?.inputStream
+        val responseInputStream = downloadFeed(resource)
         val feed = feedInput.build(XmlReader(responseInputStream))
 
         return if (feed.entries.isNotEmpty()) {
@@ -28,7 +29,23 @@ class RssFeedService(private val restTemplate: RestTemplate, private val feedInp
 
     }
 
+    private fun downloadFeed(resource: String): InputStream? {
+        val responseEntity = restTemplate.getForEntity(resource, Resource::class.java)
+        val responseInputStream = responseEntity.body?.inputStream
+        return responseInputStream
+    }
+
     fun getFeedBySites(resources: Set<String>): Map<String, List<RssFeedItem>> = resources.flatMap { getFeedBySite(it) }.groupBy { it.origin }
+
+    fun isValidFeed(resource: String): Boolean {
+        val responseInputStream = downloadFeed(resource)
+        return try {
+            feedInput.build(XmlReader(responseInputStream))
+            true
+        } catch (ex: Exception) {
+            false
+        }
+    }
 
 
 }

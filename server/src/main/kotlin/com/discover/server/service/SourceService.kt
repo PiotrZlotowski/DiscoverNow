@@ -2,6 +2,7 @@ package com.discover.server.service
 
 import com.discover.server.domain.Source
 import com.discover.server.domain.User
+import com.discover.server.exception.UserAlreadySubscribedException
 import com.discover.server.repository.SourceRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
@@ -36,6 +37,12 @@ class SourceService(val sourceRepository: SourceRepository) {
         val foundSource = sourceRepository.findSourceByUrl(source.url)
         foundSource?.let {
             // TODO: Laziness issue?
+            val isUserAlreadySubscribedToSource = it.users.contains(user)
+
+            if (isUserAlreadySubscribedToSource) {
+                throw UserAlreadySubscribedException(source.url)
+            }
+
             it.users += user
             return it
         }
