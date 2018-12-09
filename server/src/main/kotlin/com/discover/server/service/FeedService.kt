@@ -28,8 +28,8 @@ class FeedService(private val feedRepository: FeedRepository) {
                         .asSequence()
                         .filter(isNewFeed(userFeeds))
                         .map {
-                            Feed(url = it.link, title = it.title,
-                                    user = user, summary = it.description.substring(0, Math.min(MAX_LENGTH_DESCRIPTION, it.description.length)), timeCreated = it.timePublished, seen = false,
+                            Feed(url = it.url, title = it.title,
+                                    user = user, description = it.description.substring(0, Math.min(MAX_LENGTH_DESCRIPTION, it.description.length)), timePublished = it.timePublished, seen = false,
                                     source = sources.first { source -> source.url == it.origin })
                         }
                         .toList()
@@ -40,13 +40,13 @@ class FeedService(private val feedRepository: FeedRepository) {
 
     private fun isNewFeed(userFeeds: List<Feed>?): (RssFeedItem) -> Boolean {
         return {
-            userFeeds?.any { feed -> feed.url == it.link }?.not() ?: true
+            userFeeds?.any { feed -> feed.url == it.url }?.not() ?: true
         }
     }
 
-    fun getCurrentUserFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimeCreated(user)
+    fun getCurrentUserFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimePublished(user)
 
-    fun getCurrentUserSeenFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimeCreated(user, true)
+    fun getCurrentUserSeenFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimePublished(user, true)
 
     fun markFeedsAsSeen(feedIds: Set<String>, user: User) = feedRepository.markFeedsAsSeen(feedIds, user)
 }

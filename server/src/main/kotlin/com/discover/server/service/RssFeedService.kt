@@ -21,7 +21,7 @@ class RssFeedService(private val restTemplate: RestTemplate, private val feedInp
 
         return if (feed.entries.isNotEmpty()) {
             feed.entries.map { RssFeedItem(title = it.title, description = it.description.value,
-                    link = it.link, timePublished = it.publishedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), origin = resource)}.toSet()
+                    url = it.link, timePublished = it.publishedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), origin = resource)}.toSet()
         } else {
             emptySet()
         }
@@ -33,4 +33,4 @@ class RssFeedService(private val restTemplate: RestTemplate, private val feedInp
 
 }
 
-data class RssFeedItem(val title: String, val description: String, val link: String, val timePublished: LocalDateTime, val origin: String)
+data class RssFeedItem(val title: String, val description: String, val url: String, val timePublished: LocalDateTime, val origin: String)

@@ -69,7 +69,7 @@
             <column name="title" type="varchar(250)">
                 <constraints nullable="false"/>
             </column>
-            <column name="summary" type="varchar(2500)">
+            <column name="description" type="varchar(2500)">
                 <constraints nullable="false"/>
             </column>
             <column name="url" type="varchar(500)">
@@ -78,7 +78,7 @@
             <column name="seen" type="boolean">
                 <constraints nullable="false"/>
             </column>
-            <column name="time_created" type="datetime">
+            <column name="time_published" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="source_id" type="int">

@@ -9,10 +9,10 @@ import javax.persistence.Table
 @Entity
 @Table(name = "feeds")
 class Feed(val title: String,
-           val summary: String,
+           val description: String,
            val url: String,
            val seen: Boolean = false,
-           val timeCreated: LocalDateTime = LocalDateTime.now(),
+           val timePublished: LocalDateTime = LocalDateTime.now(),
            @field:ManyToOne
            @field:JoinColumn(name = "source_id")
            val source: Source,
@@ -22,6 +22,6 @@ class Feed(val title: String,
 
 
 data class FeedDTO(val title: String,
-                   val summary: String,
+                   val description: String,
                    val url: String,
-                   val timeCreated: String)
+                   val timePublished: String)

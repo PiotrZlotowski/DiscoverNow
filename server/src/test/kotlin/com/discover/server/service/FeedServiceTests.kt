@@ -47,7 +47,7 @@ class FeedServiceTests {
         val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList())
         val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
         val givenTime = LocalDateTime.now()
-        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", link = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
+        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
 
         val feedBySite = mapOf(RSS_URL to listOf(rssFeedItem))
 
@@ -67,7 +67,7 @@ class FeedServiceTests {
         val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList())
         val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
         val givenTime = LocalDateTime.now()
-        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", link = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
+        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
 
         val givenFeedBySite = mapOf(RSS_URL to listOf(rssFeedItem))
 
@@ -82,7 +82,7 @@ class FeedServiceTests {
         then(!actual.first().seen)
         then(actual.first().title == "Feed Item#1")
         then(actual.first().url == "$RSS_URL/items/1")
-        then(actual.first().timeCreated == givenTime)
+        then(actual.first().timePublished == givenTime)
     }
 
     @Test
@@ -91,8 +91,8 @@ class FeedServiceTests {
         val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList())
         val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
         val givenTime = LocalDateTime.now()
-        val givenRssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", link = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
-        val givenAlreadySavedFeed = Feed(title = "", url = "$RSS_URL/items/1", source = givenSource, user = givenUser, timeCreated = givenTime, seen = false, summary = "")
+        val givenRssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
+        val givenAlreadySavedFeed = Feed(title = "", url = "$RSS_URL/items/1", source = givenSource, user = givenUser, timePublished= givenTime, seen = false, description = "")
 
         val givenFeedBySite = mapOf(RSS_URL to listOf(givenRssFeedItem))
 

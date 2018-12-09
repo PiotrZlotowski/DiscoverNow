@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface FeedRepository: CrudRepository<Feed, Long> {
 
-    fun findByUserAndSeenOrderByTimeCreated(user: User, seen: Boolean = false): List<Feed>
+    fun findByUserAndSeenOrderByTimePublished(user: User, seen: Boolean = false): List<Feed>
 
     @Modifying
     @Query("Update Feed f set f.seen = true where f.id in ?1 and f.user = ?2")

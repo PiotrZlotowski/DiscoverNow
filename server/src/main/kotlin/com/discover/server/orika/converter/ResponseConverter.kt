@@ -22,7 +22,7 @@ class SourceResponseConverter: CustomConverter<Source, Response>() {
 class FeedResponseConverter: CustomConverter<Feed, Response>() {
 
     override fun convert(source: Feed, destinationType: Type<out Response>, mappingContext: MappingContext): Response {
-        val feedDTO = FeedDTO(source.title, source.summary, source.url, source.timeCreated.toString())
+        val feedDTO = FeedDTO(source.title, source.description, source.url, source.timePublished.toString())
         return Response.SuccessfulResponse(source.id, feedDTO)
     }
 }
@@ -35,7 +35,6 @@ class OptionalConverter<T>: CustomConverter<Optional<T>, Response>() {
         }
         val extractedSource: T = source.get()
         return mapperFacade.map(extractedSource, Response::class.java)
-
     }
 
 }
