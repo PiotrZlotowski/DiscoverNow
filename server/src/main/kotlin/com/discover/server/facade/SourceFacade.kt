@@ -39,6 +39,10 @@ class SourceFacade(private val mapper: MapperFacade,
     }
 
     fun updateSource(id: String, sourceRequest: SourceDTO) {
+        val isValidFeed = rssFeedService.isValidFeed(sourceRequest.url)
+        if (!isValidFeed) {
+            throw InvalidSourceFormatException(sourceRequest.url)
+        }
         val source = mapper.map(sourceRequest, Source::class.java)
         sourceService.updateSource(id, source)
     }

@@ -47,5 +47,5 @@ class SourceController(private val sourceFacade: SourceFacade) {
 class SourceSearchController(private val sourceFacade: SourceFacade) {
 
     @PostMapping
-    fun searchSources(@RequestBody searchCriteria: SearchCriteria) = sourceFacade.findAll(searchCriteria)
+    fun searchSources(@Valid @RequestBody searchCriteria: SearchCriteria) = sourceFacade.findAll(searchCriteria)
 }

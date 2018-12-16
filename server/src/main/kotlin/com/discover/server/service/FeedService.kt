@@ -48,5 +48,5 @@ class FeedService(private val feedRepository: FeedRepository) {
 
     fun getCurrentUserSeenFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimePublished(user, true)
 
-    fun markFeedsAsSeen(feedIds: Set<String>, user: User) = feedRepository.markFeedsAsSeen(feedIds, user)
+    fun markFeedsAsSeen(feedIds: Set<*>, user: User) = feedRepository.markFeedsAsSeen(feedIds, user)
 }
