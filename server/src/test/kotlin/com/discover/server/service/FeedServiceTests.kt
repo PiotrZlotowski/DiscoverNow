@@ -106,4 +106,26 @@ class FeedServiceTests {
         then(actual).hasSize(0)
     }
 
+
+    @Test
+    fun `should remove html tags whenever description has them`() {
+        // GIVEN
+        val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList())
+        val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
+        val givenTime = LocalDateTime.now()
+        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "<html><p>Short Description</p></html>", url = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
+
+        val givenFeedBySite = mapOf(RSS_URL to listOf(rssFeedItem))
+
+        // AND
+        every { feedRepository.findBySeen(seen = false) } returns emptyList()
+        every { feedRepository.saveAll(any<List<Feed>>()) } returns emptyList()
+        // WHEN
+        val actual = sut.getFeedsToSave(feedBySites = givenFeedBySite, sources = listOf(givenSource))
+
+        // THEN
+        then(actual).isNotEmpty
+        then(actual.first().description).isEqualTo("Short Description")
+    }
+
 }

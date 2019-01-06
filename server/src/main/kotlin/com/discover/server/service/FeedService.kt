@@ -4,6 +4,7 @@ import com.discover.server.domain.Feed
 import com.discover.server.domain.Source
 import com.discover.server.domain.User
 import com.discover.server.repository.FeedRepository
+import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 
 const val MAX_LENGTH_DESCRIPTION = 2499
@@ -29,13 +30,17 @@ class FeedService(private val feedRepository: FeedRepository) {
                         .filter(isNewFeed(userFeeds))
                         .map {
                             Feed(url = it.url, title = it.title,
-                                    user = user, description = it.description.substring(0, Math.min(MAX_LENGTH_DESCRIPTION, it.description.length)), timePublished = it.timePublished, seen = false,
+                                    user = user, description = parseHtmlDescription(it.description), timePublished = it.timePublished, seen = false,
                                     source = sources.first { source -> source.url == it.origin })
                         }
                         .toList()
             }
         }
         return feedsToSave
+    }
+
+    fun parseHtmlDescription(description: String): String {
+        return Jsoup.parse(description.substring(0, Math.min(MAX_LENGTH_DESCRIPTION, description.length))).text()
     }
 
     private fun isNewFeed(userFeeds: List<Feed>?): (RssFeedItem) -> Boolean {
