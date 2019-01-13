@@ -1,6 +1,6 @@
 package com.discover.server.configuration
 
-import org.springframework.beans.factory.annotation.Value
+import com.discover.server.service.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -11,34 +11,24 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.savedrequest.NullRequestCache
-import javax.sql.DataSource
 
 @EnableWebSecurity
-class SecurityConfig(private val dataSource: DataSource) : WebSecurityConfigurerAdapter(false) {
+class SecurityConfig(private val userService: UserService) : WebSecurityConfigurerAdapter(false) {
 
-
-    @Value("\${spring.security.queries.users}")
-    private lateinit var usersQuery : String
-
-    @Value("\${spring.security.queries.roles}")
-    private lateinit var rolesQuery : String
 
     override fun configure(http: HttpSecurity) {
             http.authorizeRequests()
                     .antMatchers("/api/authorization/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/api/**").fullyAuthenticated()
 
             http.requestCache().requestCache(NullRequestCache())
-            http.headers().frameOptions()?.sameOrigin()
+            http.headers().frameOptions().sameOrigin()
             http.csrf().disable()
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
-        auth
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(usersQuery)
-                .authoritiesByUsernameQuery(rolesQuery)
+        auth.userDetailsService(userService)
     }
 
     @Bean
@@ -46,9 +36,8 @@ class SecurityConfig(private val dataSource: DataSource) : WebSecurityConfigurer
         return PasswordEncoderFactories.createDelegatingPasswordEncoder()
     }
 
-    @Bean
     override fun userDetailsServiceBean(): UserDetailsService {
-        return super.userDetailsServiceBean()
+        return userService
     }
 
     @Bean
