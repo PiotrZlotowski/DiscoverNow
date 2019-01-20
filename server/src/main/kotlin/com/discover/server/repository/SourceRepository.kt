@@ -14,6 +14,6 @@ interface SourceRepository: JpaRepository<Source, Long>, JpaSpecificationExecuto
             "or s.lastRefresh = null")
     fun findSourcesReadyToProcess(): List<Source>
 
-
     fun findSourceByUrl(url: String): Source?
+
 }

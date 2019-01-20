@@ -5,6 +5,7 @@ import com.discover.server.domain.User
 import com.discover.server.exception.UserAlreadySubscribedException
 import com.discover.server.repository.SourceRepository
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import javax.transaction.Transactional
@@ -59,7 +60,7 @@ class SourceService(val sourceRepository: SourceRepository) {
 
     fun getSources(): MutableList<Source> = sourceRepository.findAll()
 
-    fun getSource(id: String) = sourceRepository.findById(id.toLong())
+    fun getSource(id: String) = sourceRepository.findByIdOrNull(id.toLong())
 
     @Transactional
     fun updateSource(id: String, source: Source) {

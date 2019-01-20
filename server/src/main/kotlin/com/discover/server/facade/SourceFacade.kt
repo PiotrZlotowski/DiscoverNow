@@ -1,6 +1,5 @@
 package com.discover.server.facade
 
-import com.discover.server.domain.Response
 import com.discover.server.domain.SearchCriteria
 import com.discover.server.domain.Source
 import com.discover.server.domain.SourceDTO
@@ -18,24 +17,24 @@ class SourceFacade(private val mapper: MapperFacade,
                    private val searchService: SearchService<Source>,
                    private val rssFeedService: RssFeedService) {
 
-    fun addSource(sourceRequest: SourceDTO, user: User): Response {
+    fun addSource(sourceRequest: SourceDTO, user: User): SourceDTO {
         val isValidFeed = rssFeedService.isValidFeed(sourceRequest.url)
         if (!isValidFeed) {
             throw InvalidSourceFormatException(sourceRequest.url)
         }
         val source = mapper.map(sourceRequest, Source::class.java)
         val addedSource = sourceService.addSource(source, user)
-        return mapper.map(addedSource, Response::class.java)
+        return mapper.map(addedSource, SourceDTO::class.java)
     }
 
-    fun getSources(): List<Response> {
+    fun getSources(): List<SourceDTO> {
         val sources = sourceService.getSources()
-        return mapper.mapAsList(sources, Response::class.java)
+        return mapper.mapAsList(sources, SourceDTO::class.java)
     }
 
-    fun getSource(id: String): Response {
+    fun getSource(id: String): SourceDTO? {
         val source = sourceService.getSource(id)
-        return mapper.map(source, Response::class.java)
+        return mapper.map(source, SourceDTO::class.java)
     }
 
     fun updateSource(id: String, sourceRequest: SourceDTO) {
@@ -51,9 +50,9 @@ class SourceFacade(private val mapper: MapperFacade,
         sourceService.deleteSourceById(id)
     }
 
-    fun findAll(searchCriteria: SearchCriteria): List<Response> {
+    fun findAll(searchCriteria: SearchCriteria): List<SourceDTO> {
         val specifications = searchCriteria.criteria.map { searchService.getSearchPredicate(it) }.toSet()
         val matchingSources = sourceService.findAll(specifications)
-        return mapper.mapAsList(matchingSources, Response::class.java)
+        return mapper.mapAsList(matchingSources, SourceDTO::class.java)
     }
 }

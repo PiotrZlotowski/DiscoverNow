@@ -23,7 +23,8 @@ class Feed(val title: String,
            val user: User) : AbstractJpaPersistable<Long>()
 
 
-data class FeedDTO(val title: String,
+data class FeedDTO(val id: Long,
+                   val title: String,
                    val description: String,
                    val url: String,
                    val timePublished: String)
