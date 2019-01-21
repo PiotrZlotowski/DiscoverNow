@@ -63,7 +63,7 @@ class RssFeedServiceTests {
 
         val rssSourceItem = RssFeedItem(title = "Article 1",
                 description = "Description1",
-                link = "http://rss.com/article/1",
+                url = "http://rss.com/article/1",
                 timePublished = LocalDateTime.of(2018, Month.JANUARY, 1, 0, 0, 0),
                 origin = resource)
         val syndContent = SyndContentImpl()

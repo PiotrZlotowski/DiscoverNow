@@ -4,6 +4,7 @@ import com.discover.server.domain.Feed
 import com.discover.server.domain.Source
 import com.discover.server.domain.User
 import com.discover.server.repository.FeedRepository
+import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 
 const val MAX_LENGTH_DESCRIPTION = 2499
@@ -28,8 +29,8 @@ class FeedService(private val feedRepository: FeedRepository) {
                         .asSequence()
                         .filter(isNewFeed(userFeeds))
                         .map {
-                            Feed(url = it.link, title = it.title,
-                                    user = user, summary = it.description.substring(0, Math.min(MAX_LENGTH_DESCRIPTION, it.description.length)), timeCreated = it.timePublished, seen = false,
+                            Feed(url = it.url, title = it.title,
+                                    user = user, description = parseHtmlDescription(it.description), timePublished = it.timePublished, seen = false,
                                     source = sources.first { source -> source.url == it.origin })
                         }
                         .toList()
@@ -38,15 +39,19 @@ class FeedService(private val feedRepository: FeedRepository) {
         return feedsToSave
     }
 
+    fun parseHtmlDescription(description: String): String {
+        return Jsoup.parse(description.substring(0, Math.min(MAX_LENGTH_DESCRIPTION, description.length))).text()
+    }
+
     private fun isNewFeed(userFeeds: List<Feed>?): (RssFeedItem) -> Boolean {
         return {
-            userFeeds?.any { feed -> feed.url == it.link }?.not() ?: true
+            userFeeds?.any { feed -> feed.url == it.url }?.not() ?: true
         }
     }
 
-    fun getCurrentUserFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimeCreated(user)
+    fun getCurrentUserFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimePublished(user)
 
-    fun getCurrentUserSeenFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimeCreated(user, true)
+    fun getCurrentUserSeenFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimePublished(user, true)
 
-    fun markFeedsAsSeen(feedIds: Set<String>, user: User) = feedRepository.markFeedsAsSeen(feedIds, user)
+    fun markFeedsAsSeen(feedIds: Set<*>, user: User) = feedRepository.markFeedsAsSeen(feedIds, user)
 }

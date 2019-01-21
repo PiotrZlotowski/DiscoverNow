@@ -1,10 +1,18 @@
 package com.discover.server.domain
 
+import javax.validation.Valid
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
-data class SearchCriteria(val criteria: Set<Criteria>)
+
+data class SearchCriteria(@field:Valid
+                          @field:NotEmpty val criteria: Set<Criteria>)
 
 
-data class Criteria(val key: String, val value: String, val operator: Operator)
+data class Criteria(@field:NotBlank val key: String,
+                    @field:NotBlank val value: String,
+                    @field:NotNull val operator: Operator)
 
 
 enum class Operator {

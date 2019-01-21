@@ -8,6 +8,7 @@ import com.discover.server.domain.Source
 import com.discover.server.domain.SourceDTO
 import com.discover.server.orika.converter.FeedResponseConverter
 import com.discover.server.orika.converter.OptionalConverter
+import com.discover.server.orika.converter.SetDtoRequestConverter
 import com.discover.server.orika.converter.SourceResponseConverter
 import ma.glasnost.orika.MapperFacade
 import ma.glasnost.orika.converter.ConverterFactory
@@ -43,6 +44,7 @@ class MapperConfiguration {
         converterFactory.registerConverter(SourceResponseConverter())
         converterFactory.registerConverter(FeedResponseConverter())
         converterFactory.registerConverter(OptionalConverter<Any>())
+        converterFactory.registerConverter(SetDtoRequestConverter())
     }
 
 }

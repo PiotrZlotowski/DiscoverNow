@@ -2,6 +2,7 @@ package com.discover.server.service
 
 import com.discover.server.domain.Source
 import com.discover.server.domain.User
+import com.discover.server.exception.UserAlreadySubscribedException
 import com.discover.server.repository.SourceRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -9,6 +10,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
+import org.assertj.core.api.Assertions.catchThrowable
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -55,7 +57,7 @@ class SourceServiceTests {
         // GIVEN
         val givenSource = Source(name = RSS_NAME, url = RSS_URL)
         val givenUser = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = emptyList())
-        val givenAlreadyDefinedSource = Source(name = "My RSS", url = RSS_URL)
+        val givenAlreadyDefinedSource = Source(name = RSS_NAME, url = RSS_URL)
         // AND
         every { sourceRepository.findSourceByUrl(givenSource.url) } returns givenAlreadyDefinedSource
 
@@ -106,6 +108,24 @@ class SourceServiceTests {
                 .first().isEqualTo(givenSource)
 
         verify { sourceRepository.findAll(any<Specification<Source>>()) }
+    }
+
+    @Test
+    fun `addSource should throw UserAlreadySubscribedException whenever adding already subscribed source`() {
+        // GIVEN
+        val givenSource = Source(name = RSS_NAME, url = RSS_URL, users = emptyList())
+        val givenAlreadySubscribedSource = Source(name = RSS_NAME, url = RSS_URL)
+        val givenUser = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = listOf(givenSource))
+        givenSource.users += givenUser
+
+        // AND
+        every { sourceRepository.findSourceByUrl(givenSource.url) } returns givenSource
+
+        // WHEN
+        val actual = catchThrowable { sut.addSource(user = givenUser, source = givenAlreadySubscribedSource) }
+
+        // THEN
+        then(actual).isExactlyInstanceOf(UserAlreadySubscribedException::class.java)
     }
 
 

@@ -13,6 +13,7 @@ buildscript {
         mockitoKotlinVersion = '1.6.0'
         mockitoVersion = '2.23.0'
         mockkVersion = '1.8.11.kotlin13'
+        jsoupVersion = '1.11.3'
 
     }
     dependencies {
@@ -95,6 +96,7 @@ dependencies {
     compile group: 'com.rometools', name: 'rome', version: "${romeTools}"
     compile group: 'ma.glasnost.orika', name: 'orika-core', version: "${orikaCore}"
     compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "${jacksonKotlin}"
+    compile group: 'org.jsoup', name: 'jsoup', version: "${jsoupVersion}"
 
 
     runtime('org.springframework.boot:spring-boot-devtools')
