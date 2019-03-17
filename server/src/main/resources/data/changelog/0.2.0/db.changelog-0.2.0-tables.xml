@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="table_1" author="pz">
+        <createTable tableName="compilations">
+            <column autoIncrement="true" name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_users_collections"
+                             references="users(id)"
+                />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="table_2" author="pz">
+        <createTable tableName="compilation_entries">
+            <column autoIncrement="true" name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="summary" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="key_takeaway" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="time_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="compilation_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_compilation_entries"
+                             references="compilations(id)"
+                />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+
+</databaseChangeLog>

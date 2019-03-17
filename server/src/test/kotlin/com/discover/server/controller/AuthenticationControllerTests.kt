@@ -1,13 +1,17 @@
 package com.discover.server.controller
 
+import com.discover.server.custom.spring.interceptor.ReloadUserInterceptor
 import com.discover.server.domain.AuthenticationRequest
 import com.discover.server.domain.AuthenticationToken
-import com.discover.server.domain.User
+import com.discover.server.domain.user.User
 import com.discover.server.service.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.whenever
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.TestInstance
@@ -45,7 +49,7 @@ class AuthenticationControllerTests {
     @Autowired
     private lateinit var userDetailsService: UserDetailsService
 
-    @MockBean
+    @MockkBean
     private lateinit var authenticationManager: AuthenticationManager
 
     @Test
@@ -53,12 +57,12 @@ class AuthenticationControllerTests {
         // GIVEN
         val authenticationRequest = AuthenticationRequest("user1", "password1")
         val authTokenResponse = AuthenticationToken("user1", "1")
-        val expectedJsonResponse = objectMapper.writeValueAsString(authTokenResponse);
+        val expectedJsonResponse = objectMapper.writeValueAsString(authTokenResponse)
         val requestJson = objectMapper.writeValueAsString(authenticationRequest)
         val auth: Authentication = UsernamePasswordAuthenticationToken("user1", "password1")
-        val userDetail: UserDetails = User("user1", "password1", emptySet(), emptyList())
-        whenever(authenticationManager.authenticate(any())) doReturn auth
-        whenever(userDetailsService.loadUserByUsername("user1")) doReturn userDetail
+        val userDetail: UserDetails = User("user1", "password1", emptySet(), emptyList(), emptySet())
+        every { authenticationManager.authenticate(any()) } returns auth
+        every { userDetailsService.loadUserByUsername("user1") } returns userDetail
 
         // WHEN
         val requestResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/authorization/authenticate")
@@ -91,10 +95,13 @@ class AuthenticationControllerTests {
     internal class TestConfig {
 
         @Bean
-        fun dataSourceMock(): DataSource = Mockito.mock(DataSource::class.java)
+        fun dataSourceMock(): DataSource = mockk()
 
         @Bean
-        fun userServiceMock(): UserService = Mockito.mock(UserService::class.java)
+        fun userServiceMock(): UserService = mockk()
+
+        @Bean
+        fun reloadUserInterceptorMock(): ReloadUserInterceptor = mockk()
 
     }
 

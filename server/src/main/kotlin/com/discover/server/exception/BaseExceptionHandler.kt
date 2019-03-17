@@ -13,12 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class BaseExceptionHandler : ResponseEntityExceptionHandler() {
 
 
-    @ExceptionHandler(value = [UserAlreadySubscribedException::class, InvalidSourceFormatException::class])
+    @ExceptionHandler(value = [UserAlreadySubscribedException::class, InvalidSourceFormatException::class, CompilationNotFoundException::class])
     fun handleCustomExceptions(ex: Exception, request: WebRequest): ResponseEntity<Any> {
         val httpHeaders = HttpHeaders()
         return when (ex) {
             is UserAlreadySubscribedException -> handleUserAlreadySubscribedException(ex, httpHeaders, request)
             is InvalidSourceFormatException -> handleInvalidSourceFormatException(ex, httpHeaders, request)
+            is CompilationNotFoundException -> handleCompilationNotFoundException(ex, httpHeaders, request)
             else -> throw ex
         }
     }
@@ -40,6 +41,12 @@ class BaseExceptionHandler : ResponseEntityExceptionHandler() {
     fun handleInvalidSourceFormatException(ex: InvalidSourceFormatException, headers: HttpHeaders, request: WebRequest): ResponseEntity<Any> {
         val status = HttpStatus.BAD_REQUEST
         val errorResponse = ErrorResponse("${ex.message} ${ex.url}", emptyList())
+        return ResponseEntity(errorResponse, headers, status)
+    }
+
+    fun handleCompilationNotFoundException(ex: CompilationNotFoundException, headers: HttpHeaders, request: WebRequest): ResponseEntity<Any> {
+        val status = HttpStatus.BAD_REQUEST
+        val errorResponse = ErrorResponse("${ex.message} ${ex.compilationId}", emptyList())
         return ResponseEntity(errorResponse, headers, status)
     }
 

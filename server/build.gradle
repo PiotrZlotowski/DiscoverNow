@@ -1,9 +1,9 @@
 buildscript {
     ext {
-        kotlinVersion = '1.3.0'
+        kotlinVersion = '1.3.21'
         springBootVersion = '2.1.2.RELEASE'
         detektVersion = '1.0.0.RC6-4'
-        swaggerVersion = '2.8.0'
+        swaggerVersion = '2.9.2'
         liquibaseVersion = '3.6.2'
         postgresqlDriverVersion = '42.2.2'
         assertJVersion = '3.10.0'
@@ -12,8 +12,9 @@ buildscript {
         jacksonKotlin = '2.9.+'
         mockitoKotlinVersion = '1.6.0'
         mockitoVersion = '2.23.0'
-        mockkVersion = '1.8.11.kotlin13'
+        mockkVersion = '1.9.+'
         jsoupVersion = '1.11.3'
+        springMockkVersion = '1.1.0'
 
     }
     dependencies {
@@ -35,6 +36,8 @@ apply plugin: "kotlin-jpa"
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+
+
 
 group = 'com.discover'
 version = '0.0.1-SNAPSHOT'
@@ -108,7 +111,8 @@ dependencies {
     testCompile('org.springframework.security:spring-security-test')
     testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: "${mockitoKotlinVersion}"
     testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: "${mockitoVersion}"
-    testCompile group: 'io.mockk', name: 'mockk', version: "${mockkVersion}"
     testImplementation('org.junit.jupiter:junit-jupiter-api')
+    testImplementation("com.ninja-squad:springmockk:1.1.0")
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+    testImplementation("io.mockk:mockk:${mockkVersion}")
 }

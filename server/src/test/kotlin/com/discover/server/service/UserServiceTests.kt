@@ -1,6 +1,6 @@
 package com.discover.server.service
 
-import com.discover.server.domain.User
+import com.discover.server.domain.user.User
 import com.discover.server.repository.UserRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -30,7 +30,7 @@ class UserServiceTests {
     @Test
     fun `loadUserByUsername should return appropriate user when invoked`() {
         // GIVEN
-        val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList())
+        val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
         // AND
         every { userRepository.findByEmail(CORRECT_USER_EMAIL) } returns user
 

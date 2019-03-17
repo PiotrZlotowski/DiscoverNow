@@ -1,9 +1,9 @@
 package com.discover.server.facade
 
 import com.discover.server.domain.SearchCriteria
-import com.discover.server.domain.Source
-import com.discover.server.domain.SourceDTO
-import com.discover.server.domain.User
+import com.discover.server.domain.source.Source
+import com.discover.server.domain.source.SourceDTO
+import com.discover.server.domain.user.User
 import com.discover.server.exception.InvalidSourceFormatException
 import com.discover.server.service.RssFeedService
 import com.discover.server.service.SearchService

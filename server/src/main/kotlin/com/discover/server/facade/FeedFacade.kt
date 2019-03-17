@@ -1,8 +1,8 @@
 package com.discover.server.facade
 
-import com.discover.server.domain.FeedDTO
 import com.discover.server.domain.SetDTO
-import com.discover.server.domain.User
+import com.discover.server.domain.feed.FeedDTO
+import com.discover.server.domain.user.User
 import com.discover.server.service.FeedService
 import com.discover.server.service.RssFeedService
 import com.discover.server.service.SourceService

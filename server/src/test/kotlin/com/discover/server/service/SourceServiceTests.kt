@@ -1,7 +1,7 @@
 package com.discover.server.service
 
-import com.discover.server.domain.Source
-import com.discover.server.domain.User
+import com.discover.server.domain.source.Source
+import com.discover.server.domain.user.User
 import com.discover.server.exception.UserAlreadySubscribedException
 import com.discover.server.repository.SourceRepository
 import io.mockk.every
@@ -56,7 +56,7 @@ class SourceServiceTests {
     fun `addSource should add the users to the subscribers whenever it already exists`() {
         // GIVEN
         val givenSource = Source(name = RSS_NAME, url = RSS_URL)
-        val givenUser = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = emptyList())
+        val givenUser = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
         val givenAlreadyDefinedSource = Source(name = RSS_NAME, url = RSS_URL)
         // AND
         every { sourceRepository.findSourceByUrl(givenSource.url) } returns givenAlreadyDefinedSource
@@ -115,7 +115,7 @@ class SourceServiceTests {
         // GIVEN
         val givenSource = Source(name = RSS_NAME, url = RSS_URL, users = emptyList())
         val givenAlreadySubscribedSource = Source(name = RSS_NAME, url = RSS_URL)
-        val givenUser = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = listOf(givenSource))
+        val givenUser = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = listOf(givenSource), compilations = emptySet())
         givenSource.users += givenUser
 
         // AND

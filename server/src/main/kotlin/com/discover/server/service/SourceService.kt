@@ -1,7 +1,7 @@
 package com.discover.server.service
 
-import com.discover.server.domain.Source
-import com.discover.server.domain.User
+import com.discover.server.domain.source.Source
+import com.discover.server.domain.user.User
 import com.discover.server.exception.UserAlreadySubscribedException
 import com.discover.server.repository.SourceRepository
 import org.springframework.data.jpa.domain.Specification

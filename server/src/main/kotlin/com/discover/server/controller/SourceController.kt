@@ -2,8 +2,8 @@ package com.discover.server.controller
 
 import com.discover.server.domain.SearchCriteria
 import com.discover.server.facade.SourceFacade
-import com.discover.server.domain.SourceDTO
-import com.discover.server.domain.User
+import com.discover.server.domain.source.SourceDTO
+import com.discover.server.domain.user.User
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping

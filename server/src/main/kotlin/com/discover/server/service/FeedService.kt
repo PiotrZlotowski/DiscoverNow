@@ -1,8 +1,8 @@
 package com.discover.server.service
 
-import com.discover.server.domain.Feed
-import com.discover.server.domain.Source
-import com.discover.server.domain.User
+import com.discover.server.domain.feed.Feed
+import com.discover.server.domain.source.Source
+import com.discover.server.domain.user.User
 import com.discover.server.repository.FeedRepository
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service

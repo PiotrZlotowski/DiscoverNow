@@ -1,5 +1,6 @@
 package com.discover.server.configuration
 
+import com.discover.server.domain.user.User
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import springfox.documentation.builders.ApiInfoBuilder
@@ -17,6 +18,7 @@ class SwaggerConfig {
     @Bean
     fun api() : Docket {
         return Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(User::class.java)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/api/**"))

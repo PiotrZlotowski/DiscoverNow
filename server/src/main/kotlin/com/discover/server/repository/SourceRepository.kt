@@ -1,6 +1,6 @@
 package com.discover.server.repository
 
-import com.discover.server.domain.Source
+import com.discover.server.domain.source.Source
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query

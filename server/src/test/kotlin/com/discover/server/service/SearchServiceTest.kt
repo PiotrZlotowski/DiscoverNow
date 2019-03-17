@@ -2,7 +2,7 @@ package com.discover.server.service
 
 import com.discover.server.domain.Criteria
 import com.discover.server.domain.Operator
-import com.discover.server.domain.Source
+import com.discover.server.domain.source.Source
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
