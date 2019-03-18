@@ -1,6 +1,6 @@
 package com.discover.server.configuration
 
-import com.discover.server.domain.user.User
+import com.discover.server.authentication.User
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import springfox.documentation.builders.ApiInfoBuilder

@@ -1,6 +1,6 @@
 package com.discover.server.configuration
 
-import com.discover.server.custom.spring.interceptor.ReloadUserInterceptor
+import com.discover.server.authentication.ReloadUserInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer

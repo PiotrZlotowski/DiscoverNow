@@ -2,16 +2,16 @@ package com.discover.server.configuration
 
 
 
-import com.discover.server.domain.compilation.Compilation
-import com.discover.server.domain.compilation.CompilationDTO
-import com.discover.server.domain.compilation.CreateCompilationRequest
-import com.discover.server.domain.compilation.CreateEntryRequest
-import com.discover.server.domain.compilation.Entry
-import com.discover.server.domain.feed.Feed
-import com.discover.server.domain.feed.FeedDTO
-import com.discover.server.domain.source.Source
-import com.discover.server.domain.source.SourceDTO
-import com.discover.server.orika.converter.SetDtoRequestConverter
+import com.discover.server.compilation.Compilation
+import com.discover.server.compilation.CompilationDTO
+import com.discover.server.compilation.CreateCompilationRequest
+import com.discover.server.entry.CreateEntryRequest
+import com.discover.server.entry.Entry
+import com.discover.server.feed.Feed
+import com.discover.server.feed.FeedDTO
+import com.discover.server.source.Source
+import com.discover.server.source.SourceDTO
+import com.discover.server.common.SetDtoRequestConverter
 import ma.glasnost.orika.MapperFacade
 import ma.glasnost.orika.converter.ConverterFactory
 import org.springframework.context.annotation.Configuration

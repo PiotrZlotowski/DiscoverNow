@@ -1,6 +1,6 @@
 package com.discover.server.configuration
 
-import com.discover.server.service.UserService
+import com.discover.server.authentication.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
