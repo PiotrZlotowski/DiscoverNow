@@ -8,9 +8,9 @@ val orikaCore  = "1.5.2"
 val jacksonKotlin  = "2.9.+"
 val mockitoKotlinVersion  = "1.6.0"
 val mockitoVersion  = "2.23.0"
-val mockkVersion  = "1.9.+"
+val mockkVersion  = "1.9.1"
 val jsoupVersion  = "1.11.3"
-val springMockkVersion  = "1.1.0"
+val springMockkVersion  = "1.1.2"
 
 buildscript {
     val kotlinVersion  = "1.3.30"
@@ -107,7 +107,7 @@ dependencies {
     testCompile("com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}")
     testCompile("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("com.ninja-squad:springmockk:1.1.0")
+    testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.mockk:mockk:${mockkVersion}")
 }
