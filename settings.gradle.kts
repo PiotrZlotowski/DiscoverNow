@@ -1,4 +1,4 @@
-rootProject.name = 'discover-now'
+rootProject.name = "discover-now"
 
 include("server")
 include("web")
