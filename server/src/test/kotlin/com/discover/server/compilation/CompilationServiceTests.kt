@@ -1,10 +1,6 @@
 package com.discover.server.compilation
 
-import com.discover.server.compilation.CompilationService
-import com.discover.server.compilation.Compilation
-import com.discover.server.compilation.CompilationType
 import com.discover.server.authentication.User
-import com.discover.server.compilation.CompilationRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -42,5 +38,25 @@ internal class CompilationServiceTests {
         assertThat(actual.type).isEqualTo(CompilationType.USER_DEFINED)
         // AND
         verify { compilationRepository.saveAndFlush(compilation) }
+    }
+
+    @Test
+    fun `addNewCompilation should add new compilation with provided compilation type`() {
+        val firstUser = User("address@email.com", "pwd1", emptySet(), emptyList(), emptySet())
+        val secondUser = User("address@email.com", "pwd1", emptySet(), emptyList(), emptySet())
+        val compilation = Compilation(name = "My Compilation", type = CompilationType.READ_LATER, user = firstUser, entries = mutableSetOf())
+
+        every { compilationRepository.saveAndFlush(compilation) } returns compilation
+
+        // WHEN
+        val actual = sut.addNewCompilation(compilation = compilation, user = secondUser, compilationType = CompilationType.TODAY_I_LEARNED)
+
+        // THEN
+        assertThat(actual).isNotNull
+        assertThat(actual.user).isEqualTo(secondUser)
+        assertThat(actual.type).isEqualTo(CompilationType.TODAY_I_LEARNED)
+        // AND
+        verify { compilationRepository.saveAndFlush(compilation) }
+
     }
 }

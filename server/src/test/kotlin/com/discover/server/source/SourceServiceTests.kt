@@ -33,20 +33,20 @@ class SourceServiceTests {
     @Test
     fun `updateLastRefresh should updated to the given refresh time whenever the time is provided`() {
         // GIVEN
-        val givenSource = Source(name = RSS_NAME, url = RSS_URL)
-        val givenRefreshTime = LocalDateTime.now()
-        val givenSources = listOf(givenSource)
+        val source = Source(name = RSS_NAME, url = RSS_URL)
+        val refreshTime = LocalDateTime.now()
+        val sources = listOf(source)
         // AND
-        every { sourceRepository.save(any<Source>()) } returns givenSource
+        every { sourceRepository.save(any<Source>()) } returns source
 
         // WHEN
-        sut.updateLastRefresh(givenSources, givenRefreshTime)
+        sut.updateLastRefresh(sources, refreshTime)
 
         // THEN
-        then(givenSources).isNotEmpty
-        then(givenSources.first().lastRefresh).isEqualTo(givenRefreshTime)
+        then(sources).isNotEmpty
+        then(sources.first().lastRefresh).isEqualTo(refreshTime)
 
-        verify { sourceRepository.save(givenSource) }
+        verify { sourceRepository.save(source) }
     }
 
 
@@ -72,38 +72,38 @@ class SourceServiceTests {
     @Test
     fun `updateSource should update url, name and refreshInterval whenever provided`() {
         // GIVEN
-        val givenSourceId = "123"
-        val givenSourceData = Source(name = RSS_NAME, url = RSS_URL, refreshInterval = 20)
+        val sourceId = "123"
+        val sourceData = Source(name = RSS_NAME, url = RSS_URL, refreshInterval = 20)
         val alreadyDefinedSource = Source()
         // AND
-        every { sourceRepository.getOne(givenSourceId.toLong()) } returns alreadyDefinedSource
+        every { sourceRepository.getOne(sourceId.toLong()) } returns alreadyDefinedSource
 
         // WHEN
-        sut.updateSource(givenSourceId, givenSourceData)
+        sut.updateSource(sourceId, sourceData)
 
         // THEN
-        then(givenSourceData.url).isEqualTo(RSS_URL)
-        then(givenSourceData.name).isEqualTo(RSS_NAME)
-        then(givenSourceData.refreshInterval).isEqualTo(20)
+        then(sourceData.url).isEqualTo(RSS_URL)
+        then(sourceData.name).isEqualTo(RSS_NAME)
+        then(sourceData.refreshInterval).isEqualTo(20)
 
-        verify { sourceRepository.getOne(givenSourceId.toLong()) }
+        verify { sourceRepository.getOne(sourceId.toLong()) }
     }
 
     @Test
     fun `findAll should return Sources according to the given specification`() {
         // GIVEN
         val spec = mockk<Specification<Source>>()
-        val givenSetOfSpecification = setOf(spec)
-        val givenSource = Source()
+        val setOfSpecification = setOf(spec)
+        val source = Source()
 
-        every { sourceRepository.findAll(any<Specification<Source>>()) } returns listOf(givenSource)
+        every { sourceRepository.findAll(any<Specification<Source>>()) } returns listOf(source)
 
         // WHEN
-        val actual = sut.findAll(givenSetOfSpecification)
+        val actual = sut.findAll(setOfSpecification)
 
         // THEN
         then(actual).isNotEmpty
-                .first().isEqualTo(givenSource)
+                .first().isEqualTo(source)
 
         verify { sourceRepository.findAll(any<Specification<Source>>()) }
     }
@@ -111,16 +111,16 @@ class SourceServiceTests {
     @Test
     fun `addSource should throw UserAlreadySubscribedException whenever adding already subscribed source`() {
         // GIVEN
-        val givenSource = Source(name = RSS_NAME, url = RSS_URL, users = emptyList())
-        val givenAlreadySubscribedSource = Source(name = RSS_NAME, url = RSS_URL)
-        val givenUser = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = listOf(givenSource), compilations = emptySet())
-        givenSource.users += givenUser
+        val source = Source(name = RSS_NAME, url = RSS_URL, users = emptyList())
+        val alreadySubscribedSource = Source(name = RSS_NAME, url = RSS_URL)
+        val user = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = listOf(source), compilations = emptySet())
+        source.users += user
 
         // AND
-        every { sourceRepository.findSourceByUrl(givenSource.url) } returns givenSource
+        every { sourceRepository.findSourceByUrl(source.url) } returns source
 
         // WHEN
-        val actual = catchThrowable { sut.addSource(user = givenUser, source = givenAlreadySubscribedSource) }
+        val actual = catchThrowable { sut.addSource(user = user, source = alreadySubscribedSource) }
 
         // THEN
         then(actual).isExactlyInstanceOf(UserAlreadySubscribedException::class.java)

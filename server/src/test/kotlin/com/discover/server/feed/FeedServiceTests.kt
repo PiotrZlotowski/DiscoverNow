@@ -9,7 +9,6 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
-import org.assertj.core.api.BDDAssertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
@@ -25,107 +24,45 @@ class FeedServiceTests {
     @MockK
     private lateinit var feedRepository: FeedRepository
 
+    @MockK
+    private lateinit var newFeedExtractor: NewFeedExtractor
+
 
     @Test
-    fun `should not invoke the repository whenever there are no feeds to save`() {
+    fun `addNewFeeds should not invoke the repository whenever there are no feeds to save`() {
         // GIVEN
-        val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
-
+        val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
+        val source = Source(name = "My RSS", url = RSS_URL, users = listOf(user))
+        val sources = listOf(source)
+        val feedBySites = emptyMap<String, List<RssFeedItem>>()
         // AND
-        every { feedRepository.findBySeen(seen = false) } returns emptyList()
+        every { newFeedExtractor.getFeedsToSave(sources = sources, feedBySites = feedBySites) } returns emptyList()
         // WHEN
-        sut.addNewFeeds(feedBySites = emptyMap(), sources = listOf(givenSource))
+        sut.addNewFeeds(feedBySites = feedBySites, sources = sources)
 
         // THEN
         verify(exactly = 0) { feedRepository.saveAll(emptyList()) }
     }
 
     @Test
-    fun `should invoke the repository whenever there are feeds to save`() {
+    fun `addNewFeeds should invoke the repository whenever there are feeds to save`() {
         // GIVEN
-        val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
-        val givenTime = LocalDateTime.now()
-        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
-
-        val feedBySite = mapOf(RSS_URL to listOf(rssFeedItem))
+        val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
+        val source = Source(name = "My RSS", url = RSS_URL, users = listOf(user))
+        val time = LocalDateTime.now()
+        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = time, origin = RSS_URL)
+        val sources = listOf(source)
+        val feedBySites = mapOf(RSS_URL to listOf(rssFeedItem))
+        val feed = Feed(title = "Feed Item#1", description = "Short Description", seen = false, source = source, timePublished = LocalDateTime.now(), url = "$RSS_URL/items/1", user = user)
 
         // AND
-        every { feedRepository.findBySeen(seen = false) } returns emptyList()
+        every { newFeedExtractor.getFeedsToSave(sources = sources, feedBySites = feedBySites) } returns listOf(feed)
         every { feedRepository.saveAll(any<List<Feed>>()) } returns emptyList()
         // WHEN
-        sut.addNewFeeds(feedBySites = feedBySite, sources = listOf(givenSource))
+        sut.addNewFeeds(feedBySites = feedBySites, sources = sources)
 
         // THEN
         verify { feedRepository.saveAll(any<List<Feed>>()) }
-    }
-
-    @Test
-    fun `should return exactly one feed whenever rss items are provided`() {
-        // GIVEN
-        val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
-        val givenTime = LocalDateTime.now()
-        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
-
-        val givenFeedBySite = mapOf(RSS_URL to listOf(rssFeedItem))
-
-        // AND
-        every { feedRepository.findBySeen(seen = false) } returns emptyList()
-        every { feedRepository.saveAll(any<List<Feed>>()) } returns emptyList()
-        // WHEN
-        val actual = sut.getFeedsToSave(feedBySites = givenFeedBySite, sources = listOf(givenSource))
-
-        // THEN
-        then(actual).hasSize(1)
-        then(!actual.first().seen)
-        then(actual.first().title == "Feed Item#1")
-        then(actual.first().url == "$RSS_URL/items/1")
-        then(actual.first().timePublished == givenTime)
-    }
-
-    @Test
-    fun `should return exactly zero feeds whenever rss items are already persisted and not seen yet`() {
-        // GIVEN
-        val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
-        val givenTime = LocalDateTime.now()
-        val givenRssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
-        val givenAlreadySavedFeed = Feed(title = "", url = "$RSS_URL/items/1", source = givenSource, user = givenUser, timePublished = givenTime, seen = false, description = "")
-
-        val givenFeedBySite = mapOf(RSS_URL to listOf(givenRssFeedItem))
-
-        // AND
-        every { feedRepository.findBySeen(seen = false) } returns listOf(givenAlreadySavedFeed)
-        every { feedRepository.saveAll(any<List<Feed>>()) } returns emptyList()
-        // WHEN
-        val actual = sut.getFeedsToSave(feedBySites = givenFeedBySite, sources = listOf(givenSource))
-
-        // THEN
-        then(actual).hasSize(0)
-    }
-
-
-    @Test
-    fun `should remove html tags whenever description has them`() {
-        // GIVEN
-        val givenUser = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val givenSource = Source(name = "My RSS", url = RSS_URL, users = listOf(givenUser))
-        val givenTime = LocalDateTime.now()
-        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "<html><p>Short Description</p></html>", url = "$RSS_URL/items/1", timePublished = givenTime, origin = RSS_URL)
-
-        val givenFeedBySite = mapOf(RSS_URL to listOf(rssFeedItem))
-
-        // AND
-        every { feedRepository.findBySeen(seen = false) } returns emptyList()
-        every { feedRepository.saveAll(any<List<Feed>>()) } returns emptyList()
-        // WHEN
-        val actual = sut.getFeedsToSave(feedBySites = givenFeedBySite, sources = listOf(givenSource))
-
-        // THEN
-        then(actual).isNotEmpty
-        then(actual.first().description).isEqualTo("Short Description")
     }
 
 }
