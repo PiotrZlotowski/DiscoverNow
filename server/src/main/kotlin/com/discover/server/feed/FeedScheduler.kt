@@ -1,6 +1,6 @@
 package com.discover.server.feed
 
-import com.discover.server.common.logger
+import com.discover.server.extension.logger
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
