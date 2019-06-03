@@ -1,7 +1,7 @@
 package com.discover.server.entry
 
 import com.discover.server.compilation.Compilation
-import com.discover.server.compilation.CompilationNotFoundException
+import com.discover.server.compilation.EntityNotFoundException
 import com.discover.server.compilation.CompilationRepository
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
@@ -38,7 +38,7 @@ class EntryServiceTests {
         val mockCompilation = mockk<Compilation>()
 
 
-        val entry = Entry(title = ENTRY_TITLE, summary = ENTRY_SUMMARY, url = ENTRY_URL, keyTakeaway = ENTRY_KEYTAKEAWAY, timeCreated = null, associatedCompilation = null)
+        val entry = Entry(title = ENTRY_TITLE, summary = ENTRY_SUMMARY, url = ENTRY_URL, keyTakeaway = ENTRY_KEYTAKEAWAY, timeCreated = null, associatedCompilation = null, memos = mutableSetOf())
         // AND
         every { compilationRepository.findByIdOrNull(compilationId) } returns mockCompilation
         every { entryRepository.saveAndFlush(entry) } returns entry
@@ -59,7 +59,7 @@ class EntryServiceTests {
     fun `addNewEntry should throw an exception when compilation for give ID is not found`() {
         // GIVEN
         val compilationId = 1L
-        val entry = Entry(title = ENTRY_TITLE, summary = ENTRY_SUMMARY, url = ENTRY_URL, keyTakeaway = ENTRY_KEYTAKEAWAY, timeCreated = null, associatedCompilation = null)
+        val entry = Entry(title = ENTRY_TITLE, summary = ENTRY_SUMMARY, url = ENTRY_URL, keyTakeaway = ENTRY_KEYTAKEAWAY, timeCreated = null, associatedCompilation = null, memos = mutableSetOf())
 
         // AND
         every { compilationRepository.findByIdOrNull(compilationId) } returns null
@@ -68,7 +68,7 @@ class EntryServiceTests {
         val execution: () -> Entry = { sut.addNewEntry(compilationId, entry) }
 
         // THEN
-        assertThrows<CompilationNotFoundException> { execution() }
+        assertThrows<EntityNotFoundException> { execution() }
         verify { compilationRepository.findByIdOrNull(compilationId) }
         verify(exactly = 0) { entryRepository.saveAndFlush(entry) }
     }

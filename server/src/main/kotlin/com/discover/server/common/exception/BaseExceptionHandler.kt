@@ -1,7 +1,7 @@
 package com.discover.server.common.exception
 
 import com.discover.server.authentication.UserAlreadySubscribedException
-import com.discover.server.compilation.CompilationNotFoundException
+import com.discover.server.compilation.EntityNotFoundException
 import com.discover.server.source.InvalidSourceFormatException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -16,13 +16,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class BaseExceptionHandler : ResponseEntityExceptionHandler() {
 
 
-    @ExceptionHandler(value = [UserAlreadySubscribedException::class, InvalidSourceFormatException::class, CompilationNotFoundException::class])
+    @ExceptionHandler(value = [UserAlreadySubscribedException::class, InvalidSourceFormatException::class, EntityNotFoundException::class])
     fun handleCustomExceptions(ex: Exception, request: WebRequest): ResponseEntity<Any> {
         val httpHeaders = HttpHeaders()
         return when (ex) {
             is UserAlreadySubscribedException -> handleUserAlreadySubscribedException(ex, httpHeaders, request)
             is InvalidSourceFormatException -> handleInvalidSourceFormatException(ex, httpHeaders, request)
-            is CompilationNotFoundException -> handleCompilationNotFoundException(ex, httpHeaders, request)
+            is EntityNotFoundException -> handleEntityNotFoundException(ex, httpHeaders, request)
             else -> throw ex
         }
     }
@@ -47,9 +47,9 @@ class BaseExceptionHandler : ResponseEntityExceptionHandler() {
         return ResponseEntity(errorResponse, headers, status)
     }
 
-    fun handleCompilationNotFoundException(ex: CompilationNotFoundException, headers: HttpHeaders, request: WebRequest): ResponseEntity<Any> {
+    fun handleEntityNotFoundException(ex: EntityNotFoundException, headers: HttpHeaders, request: WebRequest): ResponseEntity<Any> {
         val status = HttpStatus.BAD_REQUEST
-        val errorResponse = ErrorResponse("${ex.message} ${ex.compilationId}", emptyList())
+        val errorResponse = ErrorResponse("${ex.message} ${ex.entityId}", emptyList())
         return ResponseEntity(errorResponse, headers, status)
     }
 

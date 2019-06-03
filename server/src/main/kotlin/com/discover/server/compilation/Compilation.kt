@@ -25,7 +25,8 @@ class Compilation(var name: String,
                   val entries: MutableSet<Entry>) : AbstractJpaPersistable<Long>()
 
 
-data class CompilationDTO(val name: String,
+data class CompilationDTO(val id: Long,
+                          val name: String,
                           val entries: Set<EntryDTO>? = emptySet())
 
 
