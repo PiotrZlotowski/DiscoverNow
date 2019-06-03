@@ -3,6 +3,7 @@ package com.discover.server.entry
 import com.discover.server.compilation.Compilation
 import com.discover.server.compilation.EntityNotFoundException
 import com.discover.server.compilation.CompilationRepository
+import com.discover.server.compilation.CompilationService
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -11,7 +12,6 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.data.repository.findByIdOrNull
 
 const val ENTRY_TITLE = "Entry title"
 const val ENTRY_SUMMARY = "Entry summary"
@@ -28,7 +28,7 @@ class EntryServiceTests {
     private lateinit var entryRepository: EntryRepository
 
     @MockK
-    private lateinit var compilationRepository: CompilationRepository
+    private lateinit var compilationService: CompilationService
 
 
     @Test
@@ -40,7 +40,7 @@ class EntryServiceTests {
 
         val entry = Entry(title = ENTRY_TITLE, summary = ENTRY_SUMMARY, url = ENTRY_URL, keyTakeaway = ENTRY_KEYTAKEAWAY, timeCreated = null, associatedCompilation = null, memos = mutableSetOf())
         // AND
-        every { compilationRepository.findByIdOrNull(compilationId) } returns mockCompilation
+        every { compilationService.getCompilation(compilationId) } returns mockCompilation
         every { entryRepository.saveAndFlush(entry) } returns entry
 
         // WHEN
@@ -51,7 +51,7 @@ class EntryServiceTests {
         assertThat(actual.associatedCompilation).isEqualTo(mockCompilation)
         assertThat(actual.timeCreated).isNotNull()
         // AND
-        verify { compilationRepository.findByIdOrNull(compilationId) }
+        verify { compilationService.getCompilation(compilationId) }
         verify { entryRepository.saveAndFlush(entry) }
     }
 
@@ -62,14 +62,14 @@ class EntryServiceTests {
         val entry = Entry(title = ENTRY_TITLE, summary = ENTRY_SUMMARY, url = ENTRY_URL, keyTakeaway = ENTRY_KEYTAKEAWAY, timeCreated = null, associatedCompilation = null, memos = mutableSetOf())
 
         // AND
-        every { compilationRepository.findByIdOrNull(compilationId) } returns null
+        every { compilationService.getCompilation(compilationId) } returns null
 
         // WHEN
         val execution: () -> Entry = { sut.addNewEntry(compilationId, entry) }
 
         // THEN
         assertThrows<EntityNotFoundException> { execution() }
-        verify { compilationRepository.findByIdOrNull(compilationId) }
+        verify { compilationService.getCompilation(compilationId) }
         verify(exactly = 0) { entryRepository.saveAndFlush(entry) }
     }
 
