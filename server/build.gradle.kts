@@ -110,4 +110,5 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.mockk:mockk:${mockkVersion}")
+    implementation(project(":web"))
 }
