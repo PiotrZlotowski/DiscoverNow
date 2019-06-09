@@ -1,9 +1,9 @@
 package com.discover.server.memo
 
+import com.discover.server.common.annotation.Facade
 import ma.glasnost.orika.MapperFacade
-import org.springframework.stereotype.Service
 
-@Service
+@Facade
 class MemoFacade(private val memoService: MemoService,
                  private val mapper: MapperFacade) {
 

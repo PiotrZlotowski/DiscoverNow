@@ -4,12 +4,12 @@ import com.discover.server.entry.CreateEntryRequest
 import com.discover.server.entry.Entry
 import com.discover.server.entry.EntryDTO
 import com.discover.server.authentication.User
+import com.discover.server.common.annotation.Facade
 import com.discover.server.entry.EntryService
 import ma.glasnost.orika.MapperFacade
-import org.springframework.stereotype.Service
 
 
-@Service
+@Facade
 class CompilationFacade(private val compilationService: CompilationService,
                         private val entryService: EntryService,
                         private val mapper: MapperFacade) {
