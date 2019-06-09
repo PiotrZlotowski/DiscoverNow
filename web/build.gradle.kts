@@ -1,3 +1,5 @@
+import com.moowork.gradle.node.npm.NpmTask
+
 plugins {
   id("java")
   id("com.moowork.node") version "1.3.1"
@@ -13,4 +15,15 @@ tasks {
     from("dist/web").into("public")
     dependsOn("npm_run_build")
   }
+  test {
+    dependsOn("npm_test")
+  }
+
+  "npm_test"(NpmTask::class) {
+    setNpmCommand("run", "test-headless")
+  }
 }
+
+
+
+
