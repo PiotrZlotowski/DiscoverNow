@@ -9,4 +9,6 @@
     <include file="data/changelog/0.2.0/db.changelog-0.2.0.xml"/>
     <include file="data/changelog/0.3.0/db.changelog-0.3.0.xml"/>
 
+    <include file="data/predefined/dev.xml" />
+
 </databaseChangeLog>

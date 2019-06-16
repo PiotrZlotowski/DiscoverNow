@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
 
-    <changeSet id="table_1" author="pz">
+    <changeSet id="table_1" author="pz" context="production">
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="int">
                 <constraints primaryKey="true" nullable="false"/>
@@ -21,7 +21,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="table_2" author="pz">
+    <changeSet id="table_2" author="pz" context="production">
         <createTable tableName="user_roles">
             <column autoIncrement="true" name="id" type="int">
                 <constraints primaryKey="true" nullable="false"/>
@@ -38,7 +38,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="table_3" author="pz">
+    <changeSet id="table_3" author="pz" context="production">
         <createTable tableName="sources">
             <column autoIncrement="true" name="id" type="int">
                 <constraints primaryKey="true" nullable="false"/>
@@ -61,7 +61,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="table_4" author="pz">
+    <changeSet id="table_4" author="pz" context="production">
         <createTable tableName="feeds">
             <column autoIncrement="true" name="id" type="int">
                 <constraints primaryKey="true" nullable="false"/>
@@ -96,7 +96,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="table_5" author="pz">
+    <changeSet id="table_5" author="pz" context="production">
         <createTable tableName="user_sources">
             <column name="source_id" type="int">
                 <constraints nullable="false"

@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
 
-    <changeSet author="pz" id="procedure_1">
+    <changeSet author="pz" id="procedure_1" context="production">
         <createProcedure dbms="PostgreSQL"
                          encoding="utf8"
                          procedureName="datediff"
