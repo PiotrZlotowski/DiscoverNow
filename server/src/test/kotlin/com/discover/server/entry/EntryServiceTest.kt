@@ -1,5 +1,6 @@
 package com.discover.server.entry
 
+import com.discover.server.authentication.User
 import com.discover.server.compilation.Compilation
 import com.discover.server.compilation.EntityNotFoundException
 import com.discover.server.compilation.CompilationRepository
@@ -36,22 +37,23 @@ class EntryServiceTests {
         // GIVEN
         val compilationId = 1L
         val mockCompilation = mockk<Compilation>()
+        val mockUser = mockk<User>()
 
 
         val entry = Entry(title = ENTRY_TITLE, summary = ENTRY_SUMMARY, url = ENTRY_URL, keyTakeaway = ENTRY_KEYTAKEAWAY, timeCreated = null, associatedCompilation = null, memos = mutableSetOf())
         // AND
-        every { compilationService.getCompilation(compilationId) } returns mockCompilation
+        every { compilationService.getCompilation(compilationId, mockUser) } returns mockCompilation
         every { entryRepository.saveAndFlush(entry) } returns entry
 
         // WHEN
-        val actual = sut.addNewEntry(compilationId, entry)
+        val actual = sut.addNewEntry(compilationId, mockUser, entry)
 
         // THEN
         assertThat(actual).isNotNull
         assertThat(actual.associatedCompilation).isEqualTo(mockCompilation)
         assertThat(actual.timeCreated).isNotNull()
         // AND
-        verify { compilationService.getCompilation(compilationId) }
+        verify { compilationService.getCompilation(compilationId, mockUser) }
         verify { entryRepository.saveAndFlush(entry) }
     }
 
@@ -60,16 +62,17 @@ class EntryServiceTests {
         // GIVEN
         val compilationId = 1L
         val entry = Entry(title = ENTRY_TITLE, summary = ENTRY_SUMMARY, url = ENTRY_URL, keyTakeaway = ENTRY_KEYTAKEAWAY, timeCreated = null, associatedCompilation = null, memos = mutableSetOf())
+        val mockUser = mockk<User>()
 
         // AND
-        every { compilationService.getCompilation(compilationId) } returns null
+        every { compilationService.getCompilation(compilationId, mockUser) } returns null
 
         // WHEN
-        val execution: () -> Entry = { sut.addNewEntry(compilationId, entry) }
+        val execution: () -> Entry = { sut.addNewEntry(compilationId, mockUser, entry) }
 
         // THEN
         assertThrows<EntityNotFoundException> { execution() }
-        verify { compilationService.getCompilation(compilationId) }
+        verify { compilationService.getCompilation(compilationId, mockUser) }
         verify(exactly = 0) { entryRepository.saveAndFlush(entry) }
     }
 

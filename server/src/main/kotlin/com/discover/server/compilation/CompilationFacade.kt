@@ -19,20 +19,19 @@ class CompilationFacade(private val compilationService: CompilationService,
         return mapper.mapAsList(userCompilations, CompilationDTO::class.java)
     }
 
-    fun removeCollection(collectionId: Long) {
-        compilationService.removeCompilation(collectionId)
+    fun removeCollection(collectionId: Long, user: User) {
+        compilationService.removeCompilation(collectionId, user)
     }
 
-    fun getCompilation(compilationId: Long): CompilationDTO {
-        val compilation = compilationService.getCompilation(compilationId)
+    fun getCompilation(compilationId: Long, user: User): CompilationDTO {
+        val compilation = compilationService.getCompilation(compilationId, user)
         return mapper.map(compilation, CompilationDTO::class.java)
     }
 
-    fun addNewEntry(compilationId: Long, newEntry: CreateEntryRequest): EntryDTO {
+    fun addNewEntry(compilationId: Long, user: User, newEntry: CreateEntryRequest): EntryDTO {
         val entry = mapper.map(newEntry, Entry::class.java)
-        val persistedEntry = entryService.addNewEntry(compilationId, entry)
+        val persistedEntry = entryService.addNewEntry(compilationId, user, entry)
         return mapper.map(persistedEntry, EntryDTO::class.java)
-
     }
 
     fun removeEntry(entryId: Long) {

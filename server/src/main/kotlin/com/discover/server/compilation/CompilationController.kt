@@ -19,14 +19,14 @@ class CompilationController(private val compilationFacade: CompilationFacade) {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{compilationId}")
-    fun removeCollection(@PathVariable compilationId: Long) = compilationFacade.removeCollection(compilationId)
+    fun removeCollection(@PathVariable compilationId: Long, @AuthenticationPrincipal user: User) = compilationFacade.removeCollection(compilationId, user)
 
     @GetMapping("{compilationId}")
-    fun getCompilation(@PathVariable compilationId: Long) = compilationFacade.getCompilation(compilationId)
+    fun getCompilation(@PathVariable compilationId: Long, @AuthenticationPrincipal user: User) = compilationFacade.getCompilation(compilationId, user)
 
 
     @PostMapping("{compilationId}/entries")
-    fun addNewEntry(@PathVariable compilationId: Long, @RequestBody entry: CreateEntryRequest) = compilationFacade.addNewEntry(compilationId, entry)
+    fun addNewEntry(@PathVariable compilationId: Long, @AuthenticationPrincipal user: User, @RequestBody entry: CreateEntryRequest) = compilationFacade.addNewEntry(compilationId, user, entry)
 
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

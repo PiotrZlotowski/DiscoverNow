@@ -1,5 +1,6 @@
 package com.discover.server.entry
 
+import com.discover.server.authentication.User
 import com.discover.server.compilation.EntityNotFoundException
 import com.discover.server.compilation.CompilationService
 import org.springframework.data.repository.findByIdOrNull
@@ -14,8 +15,8 @@ class EntryService(private val entryRepository: EntryRepository,
     fun findById(entryId: Long): Entry? = entryRepository.findByIdOrNull(entryId)
 
 
-    fun addNewEntry(compilationId: Long, entry: Entry): Entry {
-        val compilation = compilationService.getCompilation(compilationId)
+    fun addNewEntry(compilationId: Long, user: User, entry: Entry): Entry {
+        val compilation = compilationService.getCompilation(compilationId, user)
         compilation?.let {
             entry.associatedCompilation = compilation
             entry.timeCreated = LocalDateTime.now()
