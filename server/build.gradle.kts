@@ -11,6 +11,7 @@ val mockitoVersion  = "2.23.0"
 val mockkVersion  = "1.9.1"
 val jsoupVersion  = "1.11.3"
 val springMockkVersion  = "1.1.2"
+val kotlinLoggingVersion = "1.6.26"
 
 buildscript {
     val kotlinVersion  = "1.3.30"
@@ -99,6 +100,7 @@ dependencies {
     compile("com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonKotlin}")
     compile("org.jsoup:jsoup:${jsoupVersion}")
     runtime("com.h2database:h2")
+    compile("io.github.microutils:kotlin-logging:${kotlinLoggingVersion}")
     testCompile("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "junit")
     }
