@@ -1,5 +1,6 @@
 package com.discover.server.memo
 
+import com.discover.server.authentication.User
 import com.discover.server.compilation.EntityNotFoundException
 import com.discover.server.entry.EntryService
 import org.springframework.data.repository.findByIdOrNull
@@ -11,8 +12,8 @@ class MemoService(private val memoRepository: MemoRepository,
                   private val entryService: EntryService) {
 
 
-    fun addMemoToEntry(entryId: Long, memo: Memo): Memo {
-        val entry = entryService.findById(entryId)
+    fun addMemoToEntry(entryId: Long, user: User, memo: Memo): Memo {
+        val entry = entryService.findById(entryId, user)
         entry?.let {
             memo.timeCreated = LocalDateTime.now()
             memo.entry = it

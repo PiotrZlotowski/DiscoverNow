@@ -8,12 +8,6 @@ class MemoFacade(private val memoService: MemoService,
                  private val mapper: MapperFacade) {
 
 
-    fun addMemo(entryId: Long, createMemoRequest: CreateMemoRequest): MemoDTO {
-        val memo = mapper.map(createMemoRequest, Memo::class.java)
-        val savedMemo = memoService.addMemoToEntry(entryId, memo)
-        return mapper.map(savedMemo, MemoDTO::class.java)
-    }
-
     fun updateMemo(memoId: Long, updateMemoRequest: UpdateMemoRequest): MemoDTO {
         val memo = mapper.map(updateMemoRequest, Memo::class.java)
         val updatedMemo = memoService.updateMemo(memoId, memo)
