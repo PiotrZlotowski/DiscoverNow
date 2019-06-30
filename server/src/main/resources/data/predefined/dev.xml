@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="predefined_data_users" author="pz" context="dev">
+       <insert tableName="USERS">
+           <column name="email" value="test@test.com"/>
+           <column name="password" value="{noop}pwd1"/>
+           <column name="active" value="true"/>
+       </insert>
+    </changeSet>
+
+    <changeSet id="predefined_data_user_roles" author="pz" context="dev">
+        <insert tableName="USER_ROLES">
+            <column name="role" value="ADMIN"/>
+            <column name="user_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="predefined_data_user_compilations" author="pz" context="dev">
+        <insert tableName="COMPILATIONS">
+            <column name="name" value="predefined_compilation_1"/>
+            <column name="type" value="USER_DEFINED"/>
+            <column name="user_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="predefined_data_compilation_entries" author="pz" context="dev">
+        <insert tableName="COMPILATION_ENTRIES">
+            <column name="title" value="predefined_compilation_entry_1"/>
+            <column name="summary" value="predefined_compilation_summary_1"/>
+            <column name="url" value="http://fake-url-1.com"/>
+            <column name="time_created" value="2019-06-16 00:00:00"/>
+            <column name="compilation_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="predefined_data_sources" author="pz" context="dev">
+        <insert tableName="SOURCES">
+            <column name="name" value="Dzone Java Feed"/>
+            <column name="url" value="http://feeds.dzone.com/java"/>
+            <column name="refresh_interval" value="30"/>
+            <column name="time_created" value="2019-06-16 00:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="predefined_data_user_sources" author="pz" context="dev">
+        <insert tableName="USER_SOURCES">
+            <column name="source_id" value="1"/>
+            <column name="user_id" value="1"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

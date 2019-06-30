@@ -1,24 +1,27 @@
 package com.discover.server.entry
 
-import com.discover.server.compilation.CompilationNotFoundException
-import com.discover.server.compilation.CompilationRepository
-import org.springframework.data.repository.findByIdOrNull
+import com.discover.server.authentication.User
+import com.discover.server.compilation.EntityNotFoundException
+import com.discover.server.compilation.CompilationService
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class EntryService(private val entryRepository: EntryRepository,
-                   private val compilationRepository: CompilationRepository) {
+                   private val compilationService: CompilationService) {
 
 
-    fun addNewEntry(compilationId: Long, entry: Entry): Entry {
-        val compilation = compilationRepository.findByIdOrNull(compilationId)
+    fun findById(entryId: Long, user: User): Entry? = entryRepository.findByIdAndAssociatedCompilation_User(entryId, user)
+
+
+    fun addNewEntry(compilationId: Long, user: User, entry: Entry): Entry {
+        val compilation = compilationService.getCompilation(compilationId, user)
         compilation?.let {
             entry.associatedCompilation = compilation
             entry.timeCreated = LocalDateTime.now()
             return entryRepository.saveAndFlush(entry)
         }
-        throw CompilationNotFoundException(compilationId)
+        throw EntityNotFoundException(compilationId)
     }
 
     fun removeEntry(entryId: Long) = entryRepository.deleteById(entryId)

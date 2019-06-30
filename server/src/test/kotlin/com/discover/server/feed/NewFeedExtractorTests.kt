@@ -11,11 +11,9 @@ import io.mockk.junit5.MockKExtension
 import org.assertj.core.api.BDDAssertions.then
 
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import java.time.LocalDateTime
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockKExtension::class)
 class NewFeedExtractorTests {
 

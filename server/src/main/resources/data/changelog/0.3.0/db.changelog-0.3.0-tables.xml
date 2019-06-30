@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="table_1" author="pz" context="production">
+        <createTable tableName="entry_memos">
+            <column autoIncrement="true" name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="content" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entry_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_entry_memos"
+                             references="compilation_entries(id)"
+                />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+
+</databaseChangeLog>

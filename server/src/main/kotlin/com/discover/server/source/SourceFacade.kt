@@ -2,12 +2,12 @@ package com.discover.server.source
 
 import com.discover.server.search.SearchCriteria
 import com.discover.server.authentication.User
+import com.discover.server.common.annotation.Facade
 import com.discover.server.feed.RssFeedService
 import com.discover.server.search.SearchService
 import ma.glasnost.orika.MapperFacade
-import org.springframework.stereotype.Service
 
-@Service
+@Facade
 class SourceFacade(private val mapper: MapperFacade,
                    private val sourceService: SourceService,
                    private val searchService: SearchService<Source>,

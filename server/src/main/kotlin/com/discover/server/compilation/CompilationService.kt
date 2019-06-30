@@ -1,17 +1,18 @@
 package com.discover.server.compilation
 
 import com.discover.server.authentication.User
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 @Service
 class CompilationService(private val compilationRepository: CompilationRepository) {
 
     fun getAllCompilations(user: User) = user.compilations
 
-    fun removeCompilation(compilationId: Long) = compilationRepository.deleteById(compilationId)
+    @Transactional
+    fun removeCompilation(compilationId: Long, user: User) = compilationRepository.deleteByIdAndUser(compilationId, user)
 
-    fun getCompilation(compilationId: Long) = compilationRepository.findByIdOrNull(compilationId)
+    fun getCompilation(compilationId: Long, user: User) = compilationRepository.findByIdAndUser(compilationId, user)
 
     fun addNewCompilation(compilation: Compilation, user: User, compilationType: CompilationType = CompilationType.USER_DEFINED): Compilation {
         compilation.user = user

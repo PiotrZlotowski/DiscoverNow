@@ -12,7 +12,6 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
@@ -23,7 +22,6 @@ import java.time.Month
 import java.time.ZoneId
 import java.util.*
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockKExtension::class)
 class RssFeedServiceTests {
 

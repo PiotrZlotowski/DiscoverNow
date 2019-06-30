@@ -2,11 +2,11 @@ package com.discover.server.feed
 
 import com.discover.server.common.SetDTO
 import com.discover.server.authentication.User
+import com.discover.server.common.annotation.Facade
 import com.discover.server.source.SourceService
 import ma.glasnost.orika.MapperFacade
-import org.springframework.stereotype.Service
 
-@Service
+@Facade
 class FeedFacade(private val rssFeedService: RssFeedService,
                  private val feedService: FeedService,
                  private val sourceService: SourceService,

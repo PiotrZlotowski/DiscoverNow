@@ -11,7 +11,6 @@ import io.mockk.verify
 import org.assertj.core.api.Assertions.catchThrowable
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
@@ -19,7 +18,6 @@ import java.time.LocalDateTime
 const val RSS_URL = "http://my-rss.com"
 const val RSS_NAME = "My RSS"
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockKExtension::class)
 class SourceServiceTests {
 
