@@ -6,7 +6,6 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -26,7 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import javax.sql.DataSource
 
 @WebMvcTest(AuthenticationController::class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Import(AuthenticationControllerTests.TestConfig::class)
 class AuthenticationControllerTests {
 

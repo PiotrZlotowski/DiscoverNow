@@ -7,7 +7,6 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -15,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 const val CORRECT_USER_EMAIL = "abc@gmail.com"
 const val INCORRECT_USER_EMAIL = "xyz@gmail.com"
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockKExtension::class)
 class UserServiceTests {
 
