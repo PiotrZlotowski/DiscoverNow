@@ -75,7 +75,7 @@ jib {
         image = "openjdk:11"
     }
     to {
-        image = "discover-server:0.4.0"
+        image = "discover-server:${project.version}"
     }
     container {
         ports = listOf("8080")
