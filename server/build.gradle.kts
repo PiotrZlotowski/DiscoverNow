@@ -32,6 +32,7 @@ plugins {
     kotlin("jvm") version "1.3.30"
     id("io.gitlab.arturbosch.detekt") version "1.0.0-RC14"
     id("org.sonarqube") version "2.6.2"
+    id("com.google.cloud.tools.jib") version "1.4.0"
 
 }
 apply {
@@ -41,10 +42,6 @@ apply {
     plugin("org.springframework.boot")
     plugin("io.spring.dependency-management")
 }
-
-
-
-
 
 val group  = "com.discover"
 val version  = "0.0.1-SNAPSHOT"
@@ -71,6 +68,18 @@ detekt {
     input = files("src/main/kotlin")
     filters = ".*/resources/.*,.*/build/.*"
     config = files("detekt.yml")
+}
+
+jib {
+    from {
+        image = "openjdk:11"
+    }
+    to {
+        image = "discover-server:0.4.0"
+    }
+    container {
+        ports = listOf("8080")
+    }
 }
 
 repositories {
