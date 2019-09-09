@@ -109,10 +109,10 @@ class SourceServiceTests {
     @Test
     fun `addSource should throw UserAlreadySubscribedException whenever adding already subscribed source`() {
         // GIVEN
-        val source = Source(name = RSS_NAME, url = RSS_URL, users = emptyList())
+        val source = Source(name = RSS_NAME, url = RSS_URL, users = mutableListOf())
         val alreadySubscribedSource = Source(name = RSS_NAME, url = RSS_URL)
         val user = User(email = "abc@gmail.com", password = "pwd1", roles = emptySet(), sources = listOf(source), compilations = emptySet())
-        source.users += user
+        source.users.add(user)
 
         // AND
         every { sourceRepository.findSourceByUrl(source.url) } returns source

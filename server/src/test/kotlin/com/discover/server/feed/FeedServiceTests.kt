@@ -30,7 +30,7 @@ class FeedServiceTests {
     fun `addNewFeeds should not invoke the repository whenever there are no feeds to save`() {
         // GIVEN
         val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val source = Source(name = "My RSS", url = RSS_URL, users = listOf(user))
+        val source = Source(name = "My RSS", url = RSS_URL, users = mutableListOf(user))
         val sources = listOf(source)
         val feedBySites = emptyMap<String, List<RssFeedItem>>()
         // AND
@@ -46,7 +46,7 @@ class FeedServiceTests {
     fun `addNewFeeds should invoke the repository whenever there are feeds to save`() {
         // GIVEN
         val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val source = Source(name = "My RSS", url = RSS_URL, users = listOf(user))
+        val source = Source(name = "My RSS", url = RSS_URL, users = mutableListOf(user))
         val time = LocalDateTime.now()
         val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = time, origin = RSS_URL)
         val sources = listOf(source)

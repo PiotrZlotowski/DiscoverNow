@@ -2,8 +2,7 @@ package com.discover.server.entry
 
 import com.discover.server.authentication.User
 import com.discover.server.compilation.Compilation
-import com.discover.server.compilation.EntityNotFoundException
-import com.discover.server.compilation.CompilationRepository
+import com.discover.server.common.exception.EntityNotFoundException
 import com.discover.server.compilation.CompilationService
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs

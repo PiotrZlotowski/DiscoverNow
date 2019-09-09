@@ -32,6 +32,13 @@ class SourceController(private val sourceFacade: SourceFacade) {
     fun updateSource(@PathVariable("id") id: String, @Valid @RequestBody source: SourceDTO) {
             sourceFacade.updateSource(id, source)
     }
+    @PostMapping("/{id}/subscribe")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun subscribeToSource(@PathVariable("id") id: String, @AuthenticationPrincipal user: User) = sourceFacade.subscribeToSource(id, user)
+
+    @PostMapping("/{id}/unsubscribe")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun unSubscribeSource(@PathVariable("id") id: String, @AuthenticationPrincipal user: User) = sourceFacade.unSubscribeSource(id, user)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

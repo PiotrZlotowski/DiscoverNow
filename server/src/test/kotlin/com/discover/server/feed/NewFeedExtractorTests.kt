@@ -26,7 +26,7 @@ class NewFeedExtractorTests {
     fun `getFeedsToSave should return exactly one feed whenever rss items are provided`() {
         // GIVEN
         val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val source = Source(name = "My RSS", url = RSS_URL, users = listOf(user))
+        val source = Source(name = "My RSS", url = RSS_URL, users = mutableListOf(user))
         val time = LocalDateTime.now()
         val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = time, origin = RSS_URL)
 
@@ -50,7 +50,7 @@ class NewFeedExtractorTests {
     fun `getFeedsToSave should return exactly zero feeds whenever rss items are already persisted and not seen yet`() {
         // GIVEN
         val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val source = Source(name = "My RSS", url = RSS_URL, users = listOf(user))
+        val source = Source(name = "My RSS", url = RSS_URL, users = mutableListOf(user))
         val time = LocalDateTime.now()
         val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = time, origin = RSS_URL)
         val alreadySavedFeed = Feed(title = "", url = "$RSS_URL/items/1", source = source, user = user, timePublished = time, seen = false, description = "")
@@ -72,7 +72,7 @@ class NewFeedExtractorTests {
     fun `getFeedsToSave should remove html tags whenever description has them`() {
         // GIVEN
         val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
-        val source = Source(name = "My RSS", url = RSS_URL, users = listOf(user))
+        val source = Source(name = "My RSS", url = RSS_URL, users = mutableListOf(user))
         val time = LocalDateTime.now()
         val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "<html><p>Short Description</p></html>", url = "$RSS_URL/items/1", timePublished = time, origin = RSS_URL)
 

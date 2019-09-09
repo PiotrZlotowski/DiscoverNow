@@ -1,4 +1,4 @@
-package com.discover.server.compilation
+package com.discover.server.common.exception
 
 import java.lang.RuntimeException
 

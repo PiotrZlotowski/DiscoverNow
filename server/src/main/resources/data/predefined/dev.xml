@@ -45,6 +45,12 @@
             <column name="refresh_interval" value="30"/>
             <column name="time_created" value="2019-06-16 00:00:00"/>
         </insert>
+        <insert tableName="SOURCES">
+            <column name="name" value="Intellij Blog"/>
+            <column name="url" value="https://blog.jetbrains.com/idea/feed/"/>
+            <column name="refresh_interval" value="30"/>
+            <column name="time_created" value="2019-09-09 00:00:00"/>
+        </insert>
     </changeSet>
 
     <changeSet id="predefined_data_user_sources" author="pz" context="dev">

@@ -21,4 +21,6 @@ class FeedService(private val feedRepository: FeedRepository, private val newFee
     fun getCurrentUserSeenFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimePublished(user, true)
 
     fun markFeedsAsSeen(feedIds: Set<*>, user: User) = feedRepository.markFeedsAsSeen(feedIds, user)
+
+    fun deleteAllFeeds(feeds: List<Feed>) = feedRepository.deleteAll(feeds)
 }

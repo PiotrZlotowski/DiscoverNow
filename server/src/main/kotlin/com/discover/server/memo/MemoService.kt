@@ -1,7 +1,7 @@
 package com.discover.server.memo
 
 import com.discover.server.authentication.User
-import com.discover.server.compilation.EntityNotFoundException
+import com.discover.server.common.exception.EntityNotFoundException
 import com.discover.server.entry.EntryService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

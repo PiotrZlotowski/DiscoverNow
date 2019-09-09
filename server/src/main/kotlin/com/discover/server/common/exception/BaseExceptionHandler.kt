@@ -1,7 +1,6 @@
 package com.discover.server.common.exception
 
 import com.discover.server.authentication.UserAlreadySubscribedException
-import com.discover.server.compilation.EntityNotFoundException
 import com.discover.server.source.InvalidSourceFormatException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus

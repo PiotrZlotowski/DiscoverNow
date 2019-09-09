@@ -5,6 +5,7 @@ import com.discover.server.feed.Feed
 import com.discover.server.authentication.User
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
+import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.JoinTable
@@ -20,12 +21,12 @@ class Source(var name: String = "",
              var refreshInterval: Int = 0,
              var timeCreated: LocalDateTime = now(),
              var lastRefresh: LocalDateTime = now(),
-             @field:OneToMany(mappedBy = "source")
+             @field:OneToMany(mappedBy = "source", cascade = [CascadeType.REMOVE])
              var feeds: List<Feed> = emptyList(),
              @field:ManyToMany
              @field:JoinTable(name = "user_sources",
                      joinColumns = [JoinColumn(name =  "source_id", referencedColumnName = "id")],
                      inverseJoinColumns = [JoinColumn(name =  "user_id", referencedColumnName = "id")])
-             var users: List<User> = emptyList()) : AbstractJpaPersistable<Long>()
+             var users: MutableList<User> = mutableListOf()) : AbstractJpaPersistable<Long>()
 
 data class SourceDTO(@field:NotEmpty val url: String)

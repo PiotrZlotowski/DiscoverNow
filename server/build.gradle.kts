@@ -121,5 +121,6 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.mockk:mockk:${mockkVersion}")
+    compile("com.h2database:h2")
     implementation(project(":web"))
 }

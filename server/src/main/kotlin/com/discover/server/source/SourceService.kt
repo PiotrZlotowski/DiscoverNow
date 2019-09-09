@@ -42,11 +42,11 @@ class SourceService(val sourceRepository: SourceRepository) {
                 throw UserAlreadySubscribedException(source.url)
             }
 
-            it.users += user
+            it.users.add(user)
             return it
         }
         addSourcePredefinedData(source)
-        source.users += user
+        source.users.add(user)
         return sourceRepository.save(source)
     }
 
@@ -69,6 +69,8 @@ class SourceService(val sourceRepository: SourceRepository) {
     }
 
     fun deleteSourceById(id: String) = sourceRepository.deleteById(id.toLong())
+
+    fun saveSource(source: Source) = sourceRepository.save(source)
 
     fun findAll(specifications: Set<Specification<Source>>): List<Source> {
 
