@@ -2,6 +2,7 @@ package com.discover.server.source
 
 import com.discover.server.authentication.User
 import com.discover.server.authentication.UserAlreadySubscribedException
+import com.discover.server.common.exception.EntityNotFoundException
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -58,7 +59,9 @@ class SourceService(val sourceRepository: SourceRepository) {
 
     fun getSources(): MutableList<Source> = sourceRepository.findAll()
 
-    fun getSource(id: String) = sourceRepository.findByIdOrNull(id.toLong())
+    fun getSource(id: String): Source {
+        return sourceRepository.findByIdOrNull(id.toLong()) ?: throw EntityNotFoundException(id.toLong())
+    }
 
     @Transactional
     fun updateSource(id: String, source: Source) {

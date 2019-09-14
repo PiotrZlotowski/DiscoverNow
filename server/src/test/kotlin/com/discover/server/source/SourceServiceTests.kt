@@ -2,6 +2,7 @@ package com.discover.server.source
 
 import com.discover.server.authentication.User
 import com.discover.server.authentication.UserAlreadySubscribedException
+import com.discover.server.common.exception.EntityNotFoundException
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -13,6 +14,7 @@ import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDateTime
 
 const val RSS_URL = "http://my-rss.com"
@@ -122,6 +124,33 @@ class SourceServiceTests {
 
         // THEN
         then(actual).isExactlyInstanceOf(UserAlreadySubscribedException::class.java)
+    }
+
+    @Test
+    fun `getSource should throw EntityNotFoundException whenever source is not found`() {
+        // GIVEN
+        val sourceId = "1"
+        every { sourceRepository.findByIdOrNull(sourceId.toLong()) } returns null;
+
+        // WHEN
+        val actual = catchThrowable { sut.getSource(sourceId) }
+
+        // THEN
+        then(actual).isExactlyInstanceOf(EntityNotFoundException::class.java)
+    }
+
+    @Test
+    fun `getSource should return source whenever source is found`() {
+        // GIVEN
+        val sourceId = "1"
+        val source = Source()
+        every { sourceRepository.findByIdOrNull(sourceId.toLong()) } returns source;
+
+        // WHEN
+        val actual = sut.getSource(sourceId)
+
+        // THEN
+        then(actual).isEqualTo(source)
     }
 
 

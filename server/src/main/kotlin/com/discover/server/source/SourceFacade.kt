@@ -54,26 +54,18 @@ class SourceFacade(private val mapper: MapperFacade,
 
     fun subscribeToSource(id: String, user: User) {
         val source = sourceService.getSource(id)
-        source?.let {
-            it.users.add(user)
-            sourceService.saveSource(it)
-            return
-        }
-        throw EntityNotFoundException(id.toLong());
+        source.users.add(user)
+        sourceService.saveSource(source)
     }
 
     fun unSubscribeSource(id: String, user: User) {
         val source = sourceService.getSource(id)
-        source?.let {
-            it.users.remove(user)
-            sourceService.saveSource(it)
-            if (it.users.size == 0) {
-                logger.debug { "Removing all remaining feeds of ${source.name} because nobody is subscribed to that source anymore" }
-                feedService.deleteAllFeeds(source.feeds)
-            }
-            return
+        source.users.remove(user)
+        sourceService.saveSource(source)
+        if (source.users.size == 0) {
+            logger.debug { "Removing all remaining feeds of ${source.name} because nobody is subscribed to that source anymore" }
+            feedService.deleteAllFeeds(source.feeds)
         }
-        throw EntityNotFoundException(id.toLong());
     }
 
     fun findAll(searchCriteria: SearchCriteria): List<SourceDTO> {
