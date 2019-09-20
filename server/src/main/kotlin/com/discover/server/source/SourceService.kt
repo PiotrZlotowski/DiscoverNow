@@ -37,9 +37,7 @@ class SourceService(val sourceRepository: SourceRepository) {
         val foundSource = sourceRepository.findSourceByUrl(source.url)
         foundSource?.let {
             // TODO: Laziness issue?
-            val isUserAlreadySubscribedToSource = it.users.contains(user)
-
-            if (isUserAlreadySubscribedToSource) {
+            if (isUserAlreadySubscribedToSource(it, user)) {
                 throw UserAlreadySubscribedException(source.url)
             }
 
@@ -49,6 +47,10 @@ class SourceService(val sourceRepository: SourceRepository) {
         addSourcePredefinedData(source)
         source.users.add(user)
         return sourceRepository.save(source)
+    }
+
+    fun isUserAlreadySubscribedToSource(source: Source, user: User): Boolean {
+        return source.users.contains(user)
     }
 
     private fun addSourcePredefinedData(source: Source) {

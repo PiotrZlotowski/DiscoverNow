@@ -114,6 +114,9 @@
                 <!--<constraints nullable="false"/>-->
             <!--</column>-->
         </createTable>
+        <addPrimaryKey columnNames="source_id, user_id"
+                       constraintName="pk_user_sources"
+                       tableName="user_sources" />
     </changeSet>
 
 

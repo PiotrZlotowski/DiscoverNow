@@ -2,8 +2,8 @@ package com.discover.server.source
 
 import com.discover.server.search.SearchCriteria
 import com.discover.server.authentication.User
+import com.discover.server.authentication.UserAlreadySubscribedException
 import com.discover.server.common.annotation.Facade
-import com.discover.server.common.exception.EntityNotFoundException
 import com.discover.server.feed.FeedService
 import com.discover.server.feed.RssFeedService
 import com.discover.server.search.SearchService
@@ -54,7 +54,9 @@ class SourceFacade(private val mapper: MapperFacade,
 
     fun subscribeToSource(id: String, user: User) {
         val source = sourceService.getSource(id)
-        source.users.add(user)
+        if (sourceService.isUserAlreadySubscribedToSource(source, user)) {
+            throw UserAlreadySubscribedException(source.url)
+        }
         sourceService.saveSource(source)
     }
 
