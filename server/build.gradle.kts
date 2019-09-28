@@ -12,6 +12,7 @@ val mockkVersion  = "1.9.1"
 val jsoupVersion  = "1.11.3"
 val springMockkVersion  = "1.1.2"
 val kotlinLoggingVersion = "1.6.26"
+val archUnitVersion = "0.11.0"
 
 buildscript {
     val kotlinVersion  = "1.3.30"
@@ -117,6 +118,8 @@ dependencies {
     testCompile("org.springframework.security:spring-security-test")
     testCompile("com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}")
     testCompile("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
+    testCompile("com.tngtech.archunit:archunit-junit5-api:${archUnitVersion}")
+    testRuntime("com.tngtech.archunit:archunit-junit5-engine:${archUnitVersion}")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
