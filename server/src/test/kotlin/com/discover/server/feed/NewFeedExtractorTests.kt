@@ -22,6 +22,7 @@ class NewFeedExtractorTests {
 
     @MockK
     private lateinit var feedRepository: FeedRepository
+
     @Test
     fun `getFeedsToSave should return exactly one feed whenever rss items are provided`() {
         // GIVEN
@@ -53,7 +54,7 @@ class NewFeedExtractorTests {
         val source = Source(name = "My RSS", url = RSS_URL, users = mutableListOf(user))
         val time = LocalDateTime.now()
         val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = time, origin = RSS_URL)
-        val alreadySavedFeed = Feed(title = "", url = "$RSS_URL/items/1", source = source, user = user, timePublished = time, seen = false, description = "")
+        val alreadySavedFeed = Feed(title = "", url = "$RSS_URL/items/1", source = source, user = user, timePublished = time, seen = false, description = "", isDeleted = false)
 
         val givenFeedBySite = mapOf(RSS_URL to listOf(rssFeedItem))
 
@@ -87,6 +88,27 @@ class NewFeedExtractorTests {
         // THEN
         then(actual).isNotEmpty
         then(actual.first().description).isEqualTo("Short Description")
+    }
+
+    @Test
+    fun `getFeedsToSave should return only the feeds which are not deleted by the user`() {
+        // GIVEN
+        val user = User(email = CORRECT_USER_EMAIL, password = "pwd1", roles = emptySet(), sources = emptyList(), compilations = emptySet())
+        val source = Source(name = "My RSS", url = RSS_URL, users = mutableListOf(user))
+        val time = LocalDateTime.now()
+        val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = time, origin = RSS_URL)
+        val alreadyDeletedFeed = Feed(title = "", url = "$RSS_URL/items/1", source = source, user = user, timePublished = time, seen = false, description = "", isDeleted = true)
+
+        val givenFeedBySite = mapOf(RSS_URL to listOf(rssFeedItem))
+
+        // AND
+        every { feedRepository.findBySeen(seen = false) } returns listOf(alreadyDeletedFeed)
+        every { feedRepository.saveAll(any<List<Feed>>()) } returns emptyList()
+        // WHEN
+        val actual = sut.getFeedsToSave(feedBySites = givenFeedBySite, sources = listOf(source))
+
+        // THEN
+        then(actual).hasSize(0)
     }
 
 }

@@ -4,6 +4,7 @@ import com.discover.server.common.AbstractJpaPersistable
 import com.discover.server.authentication.User
 import com.discover.server.source.Source
 import java.time.LocalDateTime
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
@@ -16,6 +17,8 @@ class Feed(val title: String,
            val url: String,
            val seen: Boolean = false,
            val timePublished: LocalDateTime = LocalDateTime.now(),
+           @field:Column(name = "deleted")
+           val isDeleted: Boolean,
            @field:ManyToOne
            @field:JoinColumn(name = "source_id")
            val source: Source,

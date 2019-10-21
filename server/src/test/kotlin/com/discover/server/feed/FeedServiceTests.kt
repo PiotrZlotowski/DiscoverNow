@@ -51,7 +51,7 @@ class FeedServiceTests {
         val rssFeedItem = RssFeedItem(title = "Feed Item#1", description = "Short Description", url = "$RSS_URL/items/1", timePublished = time, origin = RSS_URL)
         val sources = listOf(source)
         val feedBySites = mapOf(RSS_URL to listOf(rssFeedItem))
-        val feed = Feed(title = "Feed Item#1", description = "Short Description", seen = false, source = source, timePublished = LocalDateTime.now(), url = "$RSS_URL/items/1", user = user)
+        val feed = Feed(title = "Feed Item#1", description = "Short Description", seen = false, source = source, timePublished = LocalDateTime.now(), url = "$RSS_URL/items/1", user = user, isDeleted = false)
 
         // AND
         every { newFeedExtractor.getFeedsToSave(sources = sources, feedBySites = feedBySites) } returns listOf(feed)

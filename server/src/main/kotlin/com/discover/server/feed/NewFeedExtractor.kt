@@ -16,10 +16,11 @@ class NewFeedExtractor(private val feedRepository: FeedRepository) {
                         .flatMap { it.value.toList() }
                         .asSequence()
                         .filter(isNewFeed(userFeeds))
+                        .filter(isFeedNotDeleted(userFeeds))
                         .map {
                             Feed(url = it.url, title = it.title,
                                     user = user, description = parseHtmlDescription(it.description), timePublished = it.timePublished, seen = false,
-                                    source = sources.first { source -> source.url == it.origin })
+                                    source = sources.first { source -> source.url == it.origin }, isDeleted = false)
                         }
                         .toList()
             }
@@ -35,6 +36,12 @@ class NewFeedExtractor(private val feedRepository: FeedRepository) {
     private fun isNewFeed(userFeeds: List<Feed>?): (RssFeedItem) -> Boolean {
         return {
             userFeeds?.any { feed -> feed.url == it.url }?.not() ?: true
+        }
+    }
+
+    private fun isFeedNotDeleted(userFeeds: List<Feed>?): (RssFeedItem) -> Boolean {
+        return {
+            userFeeds?.any { feed -> feed.url == it.url && feed.isDeleted }?.not() ?: true
         }
     }
 

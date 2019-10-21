@@ -10,16 +10,18 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 interface FeedRepository: CrudRepository<Feed, Long> {
 
-    fun findByUserAndSeenOrderByTimePublished(user: User, seen: Boolean = false): List<Feed>
+    fun findByUserAndSeenAndIsDeletedOrderByTimePublished(user: User, seen: Boolean = false, isDeleted: Boolean = false): List<Feed>
 
     @Transactional
     @Modifying
     @Query("Update Feed f set f.seen = true where f.id in ?1 and f.user = ?2")
     fun markFeedsAsSeen(feedIds: Set<*>, user: User)
 
-
     fun findBySeen(seen: Boolean): List<Feed>
 
-
+    @Transactional
+    @Modifying
+    @Query("Update Feed f set f.isDeleted = true where f.id = ?1 and f.user = ?2")
+    fun markFeedAsDeleted(feedId: Long, user: User)
 
 }

@@ -35,4 +35,8 @@ class FeedFacade(private val rssFeedService: RssFeedService,
         val feedIds = mapper.map(feeds, Set::class.java)
         return feedService.markFeedsAsSeen(feedIds, user)
     }
+
+    fun deleteFeed(feedId: Long, user: User) {
+        return feedService.deleteFeed(feedId, user)
+    }
 }

@@ -16,11 +16,15 @@ class FeedService(private val feedRepository: FeedRepository, private val newFee
         }
     }
 
-    fun getCurrentUserFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimePublished(user)
+    fun getCurrentUserFeeds(user: User) = feedRepository.findByUserAndSeenAndIsDeletedOrderByTimePublished(user)
 
-    fun getCurrentUserSeenFeeds(user: User) = feedRepository.findByUserAndSeenOrderByTimePublished(user, true)
+    fun getCurrentUserSeenFeeds(user: User) = feedRepository.findByUserAndSeenAndIsDeletedOrderByTimePublished(user, true)
 
     fun markFeedsAsSeen(feedIds: Set<*>, user: User) = feedRepository.markFeedsAsSeen(feedIds, user)
 
     fun deleteAllFeeds(feeds: List<Feed>) = feedRepository.deleteAll(feeds)
+
+    fun deleteFeed(feedId: Long, user: User) {
+        feedRepository.markFeedAsDeleted(feedId, user)
+    }
 }

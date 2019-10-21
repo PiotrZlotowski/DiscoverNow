@@ -78,6 +78,9 @@
             <column name="seen" type="boolean">
                 <constraints nullable="false"/>
             </column>
+            <column name="deleted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
             <column name="time_published" type="datetime">
                 <constraints nullable="false"/>
             </column>

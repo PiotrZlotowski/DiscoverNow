@@ -40,11 +40,6 @@ class SourceController(private val sourceFacade: SourceFacade) {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun unSubscribeSource(@PathVariable("id") id: String, @AuthenticationPrincipal user: User) = sourceFacade.unSubscribeSource(id, user)
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteSource(@PathVariable("id") id: String) {
-        sourceFacade.deleteSource(id)
-    }
 }
 
 @RestController

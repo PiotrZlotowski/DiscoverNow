@@ -48,10 +48,6 @@ class SourceFacade(private val mapper: MapperFacade,
         sourceService.updateSource(id, source)
     }
 
-    fun deleteSource(id: String) {
-        sourceService.deleteSourceById(id)
-    }
-
     fun subscribeToSource(id: String, user: User) {
         val source = sourceService.getSource(id)
         if (sourceService.isUserAlreadySubscribedToSource(source, user)) {
