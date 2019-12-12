@@ -33,8 +33,7 @@ plugins {
     kotlin("jvm") version "1.3.30"
     id("io.gitlab.arturbosch.detekt") version "1.0.0-RC14"
     id("org.sonarqube") version "2.6.2"
-    id("com.google.cloud.tools.jib") version "1.4.0"
-
+    id("com.google.cloud.tools.jib") version "1.8.0"
 }
 apply {
     plugin("kotlin-spring")

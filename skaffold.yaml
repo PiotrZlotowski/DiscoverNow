@@ -1,0 +1,11 @@
+apiVersion: skaffold/v1beta15
+kind: Config
+build:
+  artifacts:
+    - image: discover-server
+      jib:
+        project: server
+deploy:
+  kubectl:
+    manifests:
+    - kubernetes-manifests/discover-server.deployment.yaml

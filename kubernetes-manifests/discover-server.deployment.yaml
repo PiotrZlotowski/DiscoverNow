@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discover-server-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: discover-server
+  template:
+    metadata:
+      labels:
+        app: discover-server
+    spec:
+      containers:
+      - name: discover-server
+        image: discover-server:0.4.0
+        ports:
+        - containerPort: 8080
